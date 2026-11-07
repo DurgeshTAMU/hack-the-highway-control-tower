@@ -1,0 +1,202 @@
+{
+ "events": [
+  {
+   "event_id": "E-01",
+   "category": "plant_outage+supplier_delay",
+   "seconds": 3.26,
+   "live_calls": 107,
+   "failed_live_calls": 0,
+   "writes": 81,
+   "proof": "13/13",
+   "summary": "Plant outage at P_TX 2027-03-19..2027-03-22; 6 build(s) blocked. Supplier delay: shipment SH-0190 (CHIP-IVI for P_IN) moves 2027-03-15 -> 2027-03-19; 8 build(s) needing the part are blocked. Moved 14 production order(s) (0 transferred). Actions: 26 x crm.assign_loaner, 41 x dealer.notify, 14 x mes.reschedule."
+  },
+  {
+   "event_id": "E-02",
+   "category": "unconfirmed",
+   "seconds": 0.02,
+   "live_calls": 1,
+   "failed_live_calls": 0,
+   "writes": 0,
+   "proof": null,
+   "summary": "No operational change. Escalated to a human: [rules] unconfirmed: wording is hedged or unconfirmed (rumor, nothing confirmed, may be, no details, no dates, something); missing: a specific part, a plant, any date, a shipment or lot; 'seat material' could mean any of ['SEAT-FAB', 'SEAT-LEA', 'SEAT-VAN']"
+  },
+  {
+   "event_id": "E-03",
+   "category": "quality_hold",
+   "seconds": 8.12,
+   "live_calls": 188,
+   "failed_live_calls": 0,
+   "writes": 188,
+   "proof": "13/13",
+   "summary": "Quality hold on LOT-0130 (CHIP-IVI @ P_MS, built 2027-02-25..2027-03-01); 260 vehicles affected. Actions: 150 x crm.notify_customer, 37 x dealer.stop_sale, 1 x quality.hold_lot."
+  },
+  {
+   "event_id": "E-04",
+   "category": "plant_outage",
+   "seconds": 4.29,
+   "live_calls": 80,
+   "failed_live_calls": 0,
+   "writes": 59,
+   "proof": "13/13",
+   "summary": "Plant outage at P_KY 2027-03-16..2027-03-18; 9 build(s) blocked. Moved 9 production order(s) (0 transferred). Actions: 18 x crm.assign_loaner, 32 x dealer.notify, 9 x mes.reschedule."
+  },
+  {
+   "event_id": "E-05",
+   "category": "noise",
+   "seconds": 0.0,
+   "live_calls": 0,
+   "failed_live_calls": 0,
+   "writes": 0,
+   "proof": null,
+   "summary": "No action. Judged not operational: [rules] no plant, part, supplier, shipment or lot is mentioned."
+  },
+  {
+   "event_id": "E-06",
+   "category": "noise",
+   "seconds": 0.0,
+   "live_calls": 0,
+   "failed_live_calls": 0,
+   "writes": 0,
+   "proof": null,
+   "summary": "No action. Judged not operational: [rules] no plant, part, supplier, shipment or lot is mentioned."
+  },
+  {
+   "event_id": "E-07",
+   "category": "noise",
+   "seconds": 0.0,
+   "live_calls": 0,
+   "failed_live_calls": 0,
+   "writes": 0,
+   "proof": null,
+   "summary": "No action. Judged not operational: [rules] no plant, part, supplier, shipment or lot is mentioned."
+  },
+  {
+   "event_id": "E-08",
+   "category": "plant_outage",
+   "seconds": 2.51,
+   "live_calls": 60,
+   "failed_live_calls": 0,
+   "writes": 46,
+   "proof": "13/13",
+   "summary": "Plant outage at P_KY 2027-03-24..2027-03-25; 6 build(s) blocked. Moved 6 production order(s) (0 transferred). Actions: 15 x crm.assign_loaner, 25 x dealer.notify, 6 x mes.reschedule."
+  },
+  {
+   "event_id": "E-09",
+   "category": "supplier_delay",
+   "seconds": 1.68,
+   "live_calls": 55,
+   "failed_live_calls": 0,
+   "writes": 42,
+   "proof": "13/13",
+   "summary": "Supplier delay: shipment SH-0256 (CAM-360 for P_AL) moves 2027-03-29 -> 2027-04-01; 6 build(s) needing the part are blocked. Moved 6 production order(s) (2 transferred). Actions: 10 x crm.assign_loaner, 26 x dealer.notify, 4 x mes.reschedule, 2 x mes.transfer."
+  },
+  {
+   "event_id": "E-10",
+   "category": "supplier_delay",
+   "seconds": 0.82,
+   "live_calls": 37,
+   "failed_live_calls": 0,
+   "writes": 28,
+   "proof": "13/13",
+   "summary": "Supplier delay: shipment SH-0248 (BATT-60 for P_AL) moves 2027-03-29 -> 2027-04-01; 3 build(s) needing the part are blocked. Moved 3 production order(s) (0 transferred). Actions: 7 x crm.assign_loaner, 18 x dealer.notify, 3 x mes.reschedule."
+  },
+  {
+   "event_id": "E-11",
+   "category": "plant_outage",
+   "seconds": 1.92,
+   "live_calls": 81,
+   "failed_live_calls": 0,
+   "writes": 62,
+   "proof": "13/13",
+   "summary": "Plant outage at P_MS 2027-03-26..2027-03-30; 9 build(s) blocked. Moved 9 production order(s) (3 transferred). Actions: 17 x crm.assign_loaner, 36 x dealer.notify, 6 x mes.reschedule, 3 x mes.transfer."
+  },
+  {
+   "event_id": "E-12",
+   "category": "supplier_delay",
+   "seconds": 1.26,
+   "live_calls": 36,
+   "failed_live_calls": 0,
+   "writes": 27,
+   "proof": "13/13",
+   "summary": "Supplier delay: shipment SH-0182 (CAM-360 for P_IN) moves 2027-03-15 -> 2027-03-18; 3 build(s) needing the part are blocked. Moved 3 production order(s) (0 transferred). Actions: 10 x crm.assign_loaner, 14 x dealer.notify, 3 x mes.reschedule."
+  },
+  {
+   "event_id": "E-13",
+   "category": "unconfirmed",
+   "seconds": 0.03,
+   "live_calls": 1,
+   "failed_live_calls": 0,
+   "writes": 0,
+   "proof": null,
+   "summary": "No operational change. Escalated to a human: [rules] unconfirmed: wording is hedged or unconfirmed (not confirmed, possible, someone, sometime soon, something); missing: a specific part, a plant, any date, a shipment or lot; 'electronic' could mean any of ['CAM-360', 'CHIP-ADAS', 'CHIP-IVI', 'DISPLAY-12']"
+  },
+  {
+   "event_id": "E-14",
+   "category": "quality_hold",
+   "seconds": 2.83,
+   "live_calls": 131,
+   "failed_live_calls": 0,
+   "writes": 131,
+   "proof": "13/13",
+   "summary": "Quality hold on LOT-0017 (HARN-B @ P_TX, built 2027-02-22..2027-02-24); 180 vehicles affected. Actions: 94 x crm.notify_customer, 36 x dealer.stop_sale, 1 x quality.hold_lot."
+  },
+  {
+   "event_id": "E-15",
+   "category": "quality_hold",
+   "seconds": 2.89,
+   "live_calls": 102,
+   "failed_live_calls": 0,
+   "writes": 102,
+   "proof": "13/13",
+   "summary": "Quality hold on LOT-0191 (CHIP-IVI @ P_IN, built 2027-03-02..2027-03-03); 116 vehicles affected. Actions: 76 x crm.notify_customer, 25 x dealer.stop_sale, 1 x quality.hold_lot."
+  }
+ ],
+ "kg": {
+  "nodes": 16979,
+  "edges": 28151,
+  "nodes_by_class": {
+   "Plant": 6,
+   "Model": 6,
+   "Part": 20,
+   "Supplier": 18,
+   "Dealer": 50,
+   "Customer": 7000,
+   "Shipment": 364,
+   "Lot": 364,
+   "ProductionOrder": 540,
+   "CustomerOrder": 3263,
+   "Vehicle": 5348
+  },
+  "edges_by_relation": {
+   "CAN_BUILD": 18,
+   "USES": 47,
+   "SHIPS": 364,
+   "MADE": 364,
+   "CARRIES": 364,
+   "DELIVERS_TO": 364,
+   "OF_PART": 364,
+   "INSTALLED_AT": 364,
+   "INSTALLED_IN": 1410,
+   "AT_PLANT": 540,
+   "BUILDS": 540,
+   "PRODUCED": 5348,
+   "FULFILLED_BY": 3263,
+   "PLACED_BY": 3263,
+   "SOLD_THROUGH": 3263,
+   "AT_DEALER": 5348,
+   "OWNED_BY": 2927
+  }
+ },
+ "settings": {
+  "transfer_anchor": "disruption_start",
+  "llm_backend": "none",
+  "llm_model": "qwen2.5:7b-instruct",
+  "llm_url": null
+ },
+ "llm": null,
+ "machine": {
+  "python": "3.11.9",
+  "platform": "Windows-10-10.0.26300-SP0"
+ },
+ "seconds": 35.1
+}

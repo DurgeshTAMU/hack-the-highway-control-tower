@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+.env
+*.token
+
+# run outputs: regenerate with `python -m control_tower.run ...`; keep only the latest submission run
+runs/*
+!runs/run2/
+# the full graph export is 7.5 MB and regenerated on every run
+runs/**/knowledge_graph.graphml
