@@ -64,16 +64,22 @@ next week; the same convention then fixes the outage window to Mar 19–22 (6 af
 | Categories | 1 compound (outage + delay), 3 delays, 3 outages, 3 quality holds, 3 noise, 2 unconfirmed |
 | Live run | 879 calls, **0 failed**, 2 escalations (rumors only), 0 writes on noise/rumors |
 | Replay of `action_log.jsonl` on a fresh world | 15/15 events pass all invariants |
-| Tests | 26 passing, incl. unseen paraphrases, the organisers' explainer phrasings, open-start outages, unnumbered compounds, guardrail refusals, failed-call recovery, LLM contract, reader conflict |
+| Tests | 27 passing, incl. unseen paraphrases, the organisers' explainer phrasings, open-start outages, unnumbered compounds, guardrail refusals, failed-call recovery, LLM contract, reader conflict |
 | Runtime | ~15 s end-to-end on a laptop CPU (KG build ~4 s) |
 
-**Model cited:** rule reader only in the recorded run (no LLM installed yet). The LLM path targets a local
-small model through Ollama (`qwen2.5:7b-instruct` by default, 15 calls per run); results for that run: **TBD**.
+**Model cited:** `qwen2.5:1.5b` (Qwen2.5 1.5B Instruct, ~1 GB, Q4) served locally by Ollama on a MacBook (Apple silicon, CPU/GPU
+shared memory, no cloud). The final run (`runs/final`) made 15 LLM calls, 6,423 tokens, 26 s of model time, 27 s end to end,
+0 failed tool calls. The rule reader runs alongside as a second opinion. The 1.5B model sometimes misclassifies a sentence
+(e.g. calls a supplier delay a quality hold); the grounder overrules a failed LLM reading when another reader already grounded
+that sentence, so such slips cause no extra action or escalation. Categories, bindings and all 879 logged calls are the same
+with and without the LLM.
 
 ## Assumptions we made (the handbook is silent)
 
-1. Transfer day: earliest (day, plant) on or after the disruption start (`CT_TRANSFER_ANCHOR`; alternatives:
-   `today`, `original_date`, `restart`). Affects 5 orders (E-09, E-11).
+1. Transfer day: the order's original date (`CT_TRANSFER_ANCHOR=original_date`; alternatives: `disruption_start`,
+   `today`, `restart`). The receiving plant builds on the day already promised, so customers lose no time and nothing is
+   built earlier than planned. All options pass the 13 checks; only the build date of 5 orders (E-09, E-11) changes
+   (e.g. E-09: Mar 31 instead of Mar 29).
 2. When slots are scarce, affected orders are placed in original (date, id) order.
 3. "next <weekday>" defaults to that day next week when the data cannot tell (E-04); the alternative is logged.
 4. One loaner per customer even if they have several affected orders.

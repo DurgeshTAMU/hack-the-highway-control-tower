@@ -1,6 +1,6 @@
 # Control tower — how to run
 
-Requirements: Python 3.11, `networkx`, `streamlit`, `altair`, `pandas`, `pytest`. No cloud, no GPU.
+Requirements: Python 3.11+, `networkx`, `streamlit`, `altair`, `pandas`, `pytest`. No cloud, no GPU.
 
 ```bash
 # 1. company systems (fresh world; refuses to overwrite an existing log)
