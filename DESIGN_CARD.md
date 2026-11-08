@@ -72,7 +72,7 @@ next week; the same convention then fixes the outage window to Mar 19–22 (6 af
 | Runtime | ~15 s end-to-end on a laptop CPU (KG build ~4 s) |
 
 **Model cited:** `qwen2.5:1.5b` (Qwen2.5 1.5B Instruct, ~1 GB, Q4) served locally by Ollama on a MacBook (Apple silicon, CPU/GPU
-shared memory, no cloud). The final run (`runs/final`) made 15 LLM calls, 6,423 tokens, 26 s of model time, 27 s end to end,
+shared memory, no cloud). The final run (`runs/final`) made 15 LLM calls, 6,423 tokens, 28.4 s of model time, 29.4 s end to end,
 0 failed tool calls. The rule reader runs alongside as a second opinion. The 1.5B model sometimes misclassifies a sentence
 (e.g. calls a supplier delay a quality hold); the grounder overrules a failed LLM reading when another reader already grounded
 that sentence and the LLM named nothing that incident does not cover, so such slips cause no extra action or escalation
