@@ -16,7 +16,7 @@ class Settings:
     #   original_date (default) | disruption_start | today | restart
     transfer_anchor: str = os.environ.get("CT_TRANSFER_ANCHOR", "original_date")
     llm_backend: str = os.environ.get("CT_LLM", "none")            # none | ollama | openai
-    llm_model: str = os.environ.get("CT_LLM_MODEL", "qwen2.5:7b-instruct")
+    llm_model: str = os.environ.get("CT_LLM_MODEL", "qwen2.5:1.5b")
     llm_url: str | None = os.environ.get("CT_LLM_URL")
 
     def to_json(self):

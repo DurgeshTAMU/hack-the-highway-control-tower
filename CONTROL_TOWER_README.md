@@ -31,8 +31,8 @@ python -m pytest tests -q
 Optional local LLM reader (the rule reader stays on as a second opinion):
 
 ```bash
-ollama pull qwen2.5:7b-instruct
-CT_LLM=ollama CT_LLM_MODEL=qwen2.5:7b-instruct python -m control_tower.run --server http://127.0.0.1:8000 --out runs/run2
+ollama pull qwen2.5:1.5b
+CT_LLM=ollama CT_LLM_MODEL=qwen2.5:1.5b python -m control_tower.run --server http://127.0.0.1:8000 --out runs/llm
 # any OpenAI-compatible local server: CT_LLM=openai CT_LLM_URL=http://127.0.0.1:8080/v1 CT_LLM_MODEL=<name>
 ```
 

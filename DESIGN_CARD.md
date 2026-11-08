@@ -1,95 +1,60 @@
 # Design card — "Ground, Compile, Prove" control tower
 
-**Idea in one line.** The LLM reads; the knowledge graph decides which reading is real; the handbook is
-compiled into an exact plan; the plan is proven on a digital twin before a single live call is made.
+**Idea.** The LLM reads; the knowledge graph decides which reading is real; the handbook is compiled into an exact plan;
+the plan is proven on a digital twin before a single live call is made.
 
 ## Architecture
-
 ```
-event text ─► Coordinator ─┬─ LLM reader (local SLM, JSON-constrained) ─┐
-                           └─ rule reader (lexical, free)               ├─► readings
-                                                                         ▼
-                          Grounder: expand each reading into hypotheses (ids × date conventions),
-                          keep only those that bind to real records in the KG
-                                     │ unique binding → act   │ none / conflicting → escalate   │ no ops entity → noise
-                                     ▼
-          ┌──────────────── policy compiler (one shared slot + loaner ledger per event) ────────────────┐
-          │ SupplyChainPlanner: mes.get_schedule / reschedule / transfer (earliest feasible slot)       │
-          │ DealerNetwork:      dealer.notify (one per dealer, only its orders) / dealer.stop_sale       │
-          │ CustomerCareQuality: crm.loaner_availability / assign_loaner (tier→date→id) / notify_customer │
-          │                      / quality.hold_lot                                                      │
-          └──────────────────────────────────────────────────────────────────────────────────────────────┘
-                                     ▼
-          Prove: dry-run on the provided enterprise model (local twin) + 13 invariants checked against an
-          independent table-only oracle → only then execute live; failures → re-read + retry once → escalate
+event ─► Coordinator ─┬─ LLM reader (qwen2.5:1.5b, JSON-constrained) ─┐
+                      └─ rule reader (lexical, second opinion)        ├─► readings ─► Grounder (binds to KG records)
+                                                                       ┘     unique binding → act · conflict/none → escalate · no ops entity → noise
+ policy compiler (one shared slot + loaner ledger per event):
+   SupplyChainPlanner  mes.get_schedule / reschedule / transfer      DealerNetwork  dealer.notify / stop_sale
+   CustomerCareQuality crm.loaner_availability / assign_loaner / notify_customer / quality.hold_lot
+ Prove: dry run on the provided enterprise model + 13 invariants vs an independent table-only oracle → execute live
 ```
-
-**Ontology.** 11 classes (Supplier, Part, Model, Plant, Shipment, Lot, ProductionOrder, CustomerOrder,
-Customer, Dealer, Vehicle), 17 relations, one inferred (`Lot -INSTALLED_IN-> ProductionOrder` via plant,
-build window and BOM). ~17k nodes / 28k edges. Every impact set is a traversal that records the edges it
-walked; those edges are the cited graph path.
+**Ontology.** 11 classes (Supplier, Part, Model, Plant, Shipment, Lot, ProductionOrder, CustomerOrder, Customer, Dealer,
+Vehicle), 17 relations, one inferred (`Lot -INSTALLED_IN-> ProductionOrder` via plant, build window, BOM); ~17k nodes,
+28k edges. Every impact set is a traversal that records the edges it walked; those edges are the cited graph path.
 
 ## LLM versus code
+| Concern | Who |
+|---|---|
+| Split digests, classify, pick out names and date phrases | LLM, with the rule reader as a second opinion |
+| Names → ids, phrases → dates | code (aliases + tables, calendar): small models invent ids and fumble dates |
+| Which reading is real | knowledge graph (existence and consistency are checkable) |
+| Who is affected, where orders go, who gets a loaner | code (policy-as-code, exact rules) |
+| Dealer and owner message text | templates (deterministic, cheap) |
 
-| Concern | Who | Why |
-|---|---|---|
-| Split a digest, classify, pick out names and date phrases | LLM (+ rule reader as second opinion) | language |
-| Names → ids, phrases → dates | code (aliases.csv + table names; calendar) | SLMs mis-do calendar math and invent ids |
-| Which reading is real | knowledge graph | existence + consistency is checkable |
-| Who is affected, where orders go, who gets a loaner | code (policy-as-code) | exact rules, scored by exact replay |
-| Dealer / owner message text | templates | cheaper, deterministic; LLM optional |
-
-**Data-grounded date reading.** "Next Friday" on a Monday is genuinely ambiguous (Mar 12 or Mar 19). The
-grounder tries both conventions per message and keeps the one under which *every* incident binds. In the
-morning digest, "next Monday → next Friday" only has a real shipment (SH-0190, ETA Mar 15) if "next" means
-next week; the same convention then fixes the outage window to Mar 19–22 (6 affected orders, not 21).
+"Next Friday" on a Monday is ambiguous (Mar 12 or 19). The grounder tries both and keeps the one under which every
+incident binds: in the morning digest only "next week" matches a real shipment (SH-0190), which also fixes the outage
+window to Mar 19–22 (6 affected orders, not 21).
 
 ## Guardrails
+- No operational entity → noise, zero calls. Hedged or unspecific → escalate with what is missing, zero writes.
+- Supplier, part, plant and dates must agree with a record; two readers binding to different records → escalate.
+- The plan is withheld unless the dry run passes all 13 invariants (only affected orders moved, capacity respected,
+  one notice per dealer listing exactly its orders, loaners equal the policy winners per pool, ≥ 3 action kinds…).
+- Tool catalog read from `GET /tools`; every call is checked against it before sending. A failed move is re-read and
+  retried once, then escalated; transport errors retry with backoff.
 
-- No operational entity → noise, zero calls. Hedged wording → escalate with what is missing, zero writes.
-- Supplier/part/plant/date must agree with a record (e.g. "Quanta chip at Jackson" is refused: Jackson's chip lots are Kestrel's).
-- A quality window must line up with lot boundaries; a new ETA must be after the original.
-- Two readers that bind to different records → conflict → escalate, no writes.
-- Plan is withheld unless the dry run passes every invariant: exactly the affected orders moved; no move into a disrupted
-  day; same-plant moves at/after restart; transfers only when the home plant is full; capacity never exceeded; one notice
-  per dealer listing exactly its affected orders; loaners equal the policy-priority winners per pool; lots/stop-sale/owners
-  exact; ≥ 3 kinds of action.
-- Live failure on a move → re-read the schedule, take the next free slot once; otherwise escalate. Transport errors retry
-  with backoff; tool errors are never blindly retried.
-- Tool discovery (MCP-style): the catalog is read from `GET /tools`, and every call is checked against it (tool name,
-  argument names and types) before it is sent; a malformed call is blocked locally and escalated, never sent.
-- Escalations reach the human in plain language: what is hedged or missing, which words are vague, and what we would need to act.
+## Evaluation (15 events)
+- Categories: 1 compound, 3 delays, 3 outages, 3 quality holds, 3 noise, 2 unconfirmed.
+- Live run: **879 calls, 0 failed**, 2 escalations (rumors only), 0 writes on noise or rumors. `action_log.jsonl` has one
+  line per tool call; the 3 noise events make no calls, so 12 of the 15 events appear in it.
+- Replay on a fresh world: all events pass. Independent audit (`tools/audit_run.py`, imports none of our code): all
+  handbook rules hold. 31 tests pass.
 
-## Evaluation (this package, 15 events)
+**Model cited:** `qwen2.5:1.5b` (Qwen2.5 1.5B Instruct, ~1 GB, Q4) served locally by Ollama on a MacBook, no cloud.
+`runs/final`: 15 LLM calls, 6,423 tokens, 27.8 s of model time, 28.9 s end to end. The 1.5B model sometimes misreads a
+sentence; the rule reader and grounding overrule it, so such slips cause no extra action. Results match the rule-only run.
 
-| | Result |
-|---|---|
-| Categories | 1 compound (outage + delay), 3 delays, 3 outages, 3 quality holds, 3 noise, 2 unconfirmed |
-| Live run | 879 calls, **0 failed**, 2 escalations (rumors only), 0 writes on noise/rumors |
-| Replay of `action_log.jsonl` on a fresh world | 15/15 events pass all invariants |
-| Independent audit (`tools/audit_run.py`) | All handbook rules hold on all 15 events, incl. earliest-day packing, per-incident ≥ 3 action kinds and every call matching the server's tool schema. It imports none of our code, and it caught all 4 deliberately corrupted logs it was tested on |
-| Tests | 31 passing, incl. unseen paraphrases, the organisers' explainer phrasings, open-start outages, unnumbered compounds, guardrail refusals, failed-call recovery, LLM contract, reader conflict, tool-catalog blocking, and the independent audit on the full feed |
-| Runtime | ~15 s end-to-end on a laptop CPU (KG build ~4 s) |
-
-**Model cited:** `qwen2.5:1.5b` (Qwen2.5 1.5B Instruct, ~1 GB, Q4) served locally by Ollama on a MacBook (Apple silicon, CPU/GPU
-shared memory, no cloud). The final run (`runs/final`) made 15 LLM calls, 6,423 tokens, 27.8 s of model time, 28.9 s end to end,
-0 failed tool calls. The rule reader runs alongside as a second opinion. The 1.5B model sometimes misclassifies a sentence
-(e.g. calls a supplier delay a quality hold); the grounder overrules a failed LLM reading when another reader already grounded
-that sentence and the LLM named nothing that incident does not cover, so such slips cause no extra action or escalation
-(an LLM reading that names a different plant, part or supplier may be a second incident and still goes to a human). Categories, bindings and all 879 logged calls are the same
-with and without the LLM.
-
-## Assumptions we made (the handbook is silent)
-
-1. Transfer day: the order's original date (`CT_TRANSFER_ANCHOR=original_date`; alternatives: `disruption_start`,
-   `today`, `restart`). The receiving plant builds on the day already promised, so customers lose no time and nothing is
-   built earlier than planned. All options pass the 13 checks; only the build date of 5 orders (E-09, E-11) changes
-   (e.g. E-09: Mar 31 instead of Mar 29).
-2. When slots are scarce, affected orders are placed in original (date, id) order.
-3. "next <weekday>" defaults to that day next week when the data cannot tell (E-04); the alternative is logged.
-4. One loaner per customer even if they have several affected orders.
+## Assumptions (the handbook is silent)
+1. Transfers keep the order's original build date (`CT_TRANSFER_ANCHOR=original_date`); this changes 5 orders (E-09, E-11).
+2. When slots are scarce, orders are placed in original (date, id) order.
+3. "next <weekday>" means that day next week unless the data says otherwise (E-04).
+4. One loaner per customer even with several affected orders.
 
 ## What we would improve
-
-LLM-written dealer messages behind a validator; a confidence score that routes borderline reads to a human
-before execution; learning the date convention per source; graph DB export (Neo4j) for ad-hoc queries.
+LLM-written dealer messages behind a validator; a confidence score that routes borderline reads to a human before
+execution; a date convention learned per source; a graph-database export for ad-hoc queries.
