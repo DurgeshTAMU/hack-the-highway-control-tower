@@ -1,0 +1,216 @@
+{
+ "event": {
+  "event_id": "E-13",
+  "received_at": "2027-03-08T10:41:00",
+  "source": "ops chat",
+  "text": "Someone on the floor mentioned a possible shortage of something electronic sometime soon. Not confirmed by anyone."
+ },
+ "readers": {
+  "rules": [
+   {
+    "source": "rules",
+    "segment": 0,
+    "text": "Someone on the floor mentioned a possible shortage of something electronic sometime soon. Not confirmed by anyone.",
+    "kind": "unconfirmed",
+    "plants": [],
+    "parts": [],
+    "suppliers": [],
+    "shipments": [],
+    "lots": [],
+    "dates": {},
+    "vague_parts": [
+     {
+      "surface": "electronic",
+      "could_be": [
+       "CAM-360",
+       "CHIP-ADAS",
+       "CHIP-IVI",
+       "DISPLAY-12"
+      ]
+     }
+    ],
+    "kind_cues": {},
+    "unconfirmed_cues": [
+     "not confirmed",
+     "possible",
+     "someone",
+     "sometime soon",
+     "something"
+    ],
+    "rationale": "hedged/unconfirmed wording: ['not confirmed', 'possible', 'someone', 'sometime soon', 'something']"
+   }
+  ],
+  "llm:qwen2.5:1.5b": [
+   {
+    "source": "llm:qwen2.5:1.5b",
+    "segment": 0,
+    "text": "Someone on the floor mentioned a possible shortage of something electronic sometime soon.",
+    "kind": "unconfirmed",
+    "plants": [],
+    "parts": [],
+    "suppliers": [],
+    "shipments": [],
+    "lots": [],
+    "dates": {},
+    "vague_parts": [],
+    "kind_cues": {},
+    "unconfirmed_cues": [
+     "llm: confirmed=false"
+    ],
+    "rationale": "Not confirmed by anyone."
+   }
+  ]
+ },
+ "verdict": {
+  "category": [
+   "unconfirmed"
+  ],
+  "convention": "next_week",
+  "convention_note": "relative dates in this message read the same under every convention",
+  "incidents": [],
+  "escalations": [
+   "[rules] unconfirmed: wording is hedged or unconfirmed (not confirmed, possible, someone, sometime soon, something); missing: a specific part, a plant, any date, a shipment or lot; 'electronic' could mean any of ['CAM-360', 'CHIP-ADAS', 'CHIP-IVI', 'DISPLAY-12']",
+   "[llm:qwen2.5:1.5b] unconfirmed: wording is hedged or unconfirmed (llm: confirmed=false); missing: a specific part, a plant, any date, a shipment or lot"
+  ],
+  "noise_reasons": [],
+  "conflicts": [],
+  "readings": [
+   {
+    "reading": {
+     "source": "rules",
+     "segment": 0,
+     "text": "Someone on the floor mentioned a possible shortage of something electronic sometime soon. Not confirmed by anyone.",
+     "kind": "unconfirmed",
+     "plants": [],
+     "parts": [],
+     "suppliers": [],
+     "shipments": [],
+     "lots": [],
+     "dates": {},
+     "vague_parts": [
+      {
+       "surface": "electronic",
+       "could_be": [
+        "CAM-360",
+        "CHIP-ADAS",
+        "CHIP-IVI",
+        "DISPLAY-12"
+       ]
+      }
+     ],
+     "kind_cues": {},
+     "unconfirmed_cues": [
+      "not confirmed",
+      "possible",
+      "someone",
+      "sometime soon",
+      "something"
+     ],
+     "rationale": "hedged/unconfirmed wording: ['not confirmed', 'possible', 'someone', 'sometime soon', 'something']"
+    },
+    "status": "unconfirmed",
+    "grounded": [],
+    "reasons": [
+     "wording is hedged or unconfirmed (not confirmed, possible, someone, sometime soon, something)",
+     "missing: a specific part, a plant, any date, a shipment or lot",
+     "'electronic' could mean any of ['CAM-360', 'CHIP-ADAS', 'CHIP-IVI', 'DISPLAY-12']"
+    ]
+   },
+   {
+    "reading": {
+     "source": "llm:qwen2.5:1.5b",
+     "segment": 0,
+     "text": "Someone on the floor mentioned a possible shortage of something electronic sometime soon.",
+     "kind": "unconfirmed",
+     "plants": [],
+     "parts": [],
+     "suppliers": [],
+     "shipments": [],
+     "lots": [],
+     "dates": {},
+     "vague_parts": [],
+     "kind_cues": {},
+     "unconfirmed_cues": [
+      "llm: confirmed=false"
+     ],
+     "rationale": "Not confirmed by anyone."
+    },
+    "status": "unconfirmed",
+    "grounded": [],
+    "reasons": [
+     "wording is hedged or unconfirmed (llm: confirmed=false)",
+     "missing: a specific part, a plant, any date, a shipment or lot"
+    ]
+   }
+  ]
+ },
+ "category": [
+  "unconfirmed"
+ ],
+ "incidents": [],
+ "plan": [],
+ "dry_run": null,
+ "executed": [
+  {
+   "agent": "Coordinator",
+   "tool": "escalate",
+   "args": {
+    "reason": "Event E-13 not actionable: [rules] unconfirmed: wording is hedged or unconfirmed (not confirmed, possible, someone, sometime soon, something); missing: a specific part, a plant, any date, a shipment or lot; 'electronic' could mean any of ['CAM-360', 'CHIP-ADAS', 'CHIP-IVI', 'DISPLAY-12'] | [llm:qwen2.5:1.5b] unconfirmed: wording is hedged or unconfirmed (llm: confirmed=false); missing: a specific part, a plant, any date, a shipment or lot"
+   },
+   "ok": true,
+   "result": {
+    "ok": true
+   },
+   "why": "human in the loop"
+  }
+ ],
+ "settings": {
+  "transfer_anchor": "original_date",
+  "llm_backend": "ollama",
+  "llm_model": "qwen2.5:1.5b",
+  "llm_url": null
+ },
+ "moves": [],
+ "unplaced": [],
+ "escalation": "Event E-13 not actionable: [rules] unconfirmed: wording is hedged or unconfirmed (not confirmed, possible, someone, sometime soon, something); missing: a specific part, a plant, any date, a shipment or lot; 'electronic' could mean any of ['CAM-360', 'CHIP-ADAS', 'CHIP-IVI', 'DISPLAY-12'] | [llm:qwen2.5:1.5b] unconfirmed: wording is hedged or unconfirmed (llm: confirmed=false); missing: a specific part, a plant, any date, a shipment or lot",
+ "summary": "No operational change. Escalated to a human: [rules] unconfirmed: wording is hedged or unconfirmed (not confirmed, possible, someone, sometime soon, something); missing: a specific part, a plant, any date, a shipment or lot; 'electronic' could mean any of ['CAM-360', 'CHIP-ADAS', 'CHIP-IVI', 'DISPLAY-12']; [llm:qwen2.5:1.5b] unconfirmed: wording is hedged or unconfirmed (llm: confirmed=false); missing: a specific part, a plant, any date, a shipment or lot",
+ "audit": [
+  {
+   "t": 1794095910.584,
+   "agent": "Coordinator",
+   "step": "receive",
+   "detail": "ops chat: Someone on the floor mentioned a possible shortage of something electronic sometime soon. Not confirmed by anyone."
+  },
+  {
+   "t": 1794095911.409,
+   "agent": "Coordinator",
+   "step": "read",
+   "detail": "llm:qwen2.5:1.5b: ['unconfirmed']; rules: ['unconfirmed']"
+  },
+  {
+   "t": 1794095911.409,
+   "agent": "Coordinator",
+   "step": "ground",
+   "detail": "category=['unconfirmed']; 0 grounded incident(s); 2 escalation reason(s); relative dates in this message read the same under every convention"
+  },
+  {
+   "t": 1794095911.411,
+   "agent": "Coordinator",
+   "step": "escalate",
+   "detail": "Event E-13 not actionable: [rules] unconfirmed: wording is hedged or unconfirmed (not confirmed, possible, someone, sometime soon, something); missing: a specific part, a plant, any date, a shipment or lot; 'electronic' could mean any of ['CAM-360', 'CHIP-ADAS', 'CHIP-IVI', 'DISPLAY-12'] | [llm:qwen",
+   "ok": true
+  },
+  {
+   "t": 1794095911.411,
+   "agent": "Coordinator",
+   "step": "done",
+   "detail": "No operational change. Escalated to a human: [rules] unconfirmed: wording is hedged or unconfirmed (not confirmed, possible, someone, sometime soon, something); missing: a specific part, a plant, any "
+  }
+ ],
+ "stats": {
+  "seconds": 0.83,
+  "live_calls": 1,
+  "failed_live_calls": 0,
+  "writes": 0
+ }
+}

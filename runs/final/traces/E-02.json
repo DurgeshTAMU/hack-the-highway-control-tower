@@ -1,0 +1,216 @@
+{
+ "event": {
+  "event_id": "E-02",
+  "received_at": "2027-03-08T07:34:00",
+  "source": "ops chat",
+  "text": "Rumor from a supplier rep: something may be off with a seat material coming up. No dates, no details, nothing confirmed."
+ },
+ "readers": {
+  "rules": [
+   {
+    "source": "rules",
+    "segment": 0,
+    "text": "Rumor from a supplier rep: something may be off with a seat material coming up. No dates, no details, nothing confirmed.",
+    "kind": "unconfirmed",
+    "plants": [],
+    "parts": [],
+    "suppliers": [],
+    "shipments": [],
+    "lots": [],
+    "dates": {},
+    "vague_parts": [
+     {
+      "surface": "seat material",
+      "could_be": [
+       "SEAT-FAB",
+       "SEAT-LEA",
+       "SEAT-VAN"
+      ]
+     }
+    ],
+    "kind_cues": {},
+    "unconfirmed_cues": [
+     "rumor",
+     "nothing confirmed",
+     "may be",
+     "no details",
+     "no dates",
+     "something"
+    ],
+    "rationale": "hedged/unconfirmed wording: ['rumor', 'nothing confirmed', 'may be', 'no details', 'no dates', 'something']"
+   }
+  ],
+  "llm:qwen2.5:1.5b": [
+   {
+    "source": "llm:qwen2.5:1.5b",
+    "segment": 0,
+    "text": "Rumor from a supplier rep: something may be off with a seat material coming up.",
+    "kind": "unconfirmed",
+    "plants": [],
+    "parts": [],
+    "suppliers": [],
+    "shipments": [],
+    "lots": [],
+    "dates": {},
+    "vague_parts": [],
+    "kind_cues": {},
+    "unconfirmed_cues": [
+     "llm: confirmed=false"
+    ],
+    "rationale": "No dates, no details, nothing confirmed."
+   }
+  ]
+ },
+ "verdict": {
+  "category": [
+   "unconfirmed"
+  ],
+  "convention": "next_week",
+  "convention_note": "relative dates in this message read the same under every convention",
+  "incidents": [],
+  "escalations": [
+   "[rules] unconfirmed: wording is hedged or unconfirmed (rumor, nothing confirmed, may be, no details, no dates, something); missing: a specific part, a plant, any date, a shipment or lot; 'seat material' could mean any of ['SEAT-FAB', 'SEAT-LEA', 'SEAT-VAN']",
+   "[llm:qwen2.5:1.5b] unconfirmed: wording is hedged or unconfirmed (llm: confirmed=false); missing: a specific part, a plant, any date, a shipment or lot"
+  ],
+  "noise_reasons": [],
+  "conflicts": [],
+  "readings": [
+   {
+    "reading": {
+     "source": "rules",
+     "segment": 0,
+     "text": "Rumor from a supplier rep: something may be off with a seat material coming up. No dates, no details, nothing confirmed.",
+     "kind": "unconfirmed",
+     "plants": [],
+     "parts": [],
+     "suppliers": [],
+     "shipments": [],
+     "lots": [],
+     "dates": {},
+     "vague_parts": [
+      {
+       "surface": "seat material",
+       "could_be": [
+        "SEAT-FAB",
+        "SEAT-LEA",
+        "SEAT-VAN"
+       ]
+      }
+     ],
+     "kind_cues": {},
+     "unconfirmed_cues": [
+      "rumor",
+      "nothing confirmed",
+      "may be",
+      "no details",
+      "no dates",
+      "something"
+     ],
+     "rationale": "hedged/unconfirmed wording: ['rumor', 'nothing confirmed', 'may be', 'no details', 'no dates', 'something']"
+    },
+    "status": "unconfirmed",
+    "grounded": [],
+    "reasons": [
+     "wording is hedged or unconfirmed (rumor, nothing confirmed, may be, no details, no dates, something)",
+     "missing: a specific part, a plant, any date, a shipment or lot",
+     "'seat material' could mean any of ['SEAT-FAB', 'SEAT-LEA', 'SEAT-VAN']"
+    ]
+   },
+   {
+    "reading": {
+     "source": "llm:qwen2.5:1.5b",
+     "segment": 0,
+     "text": "Rumor from a supplier rep: something may be off with a seat material coming up.",
+     "kind": "unconfirmed",
+     "plants": [],
+     "parts": [],
+     "suppliers": [],
+     "shipments": [],
+     "lots": [],
+     "dates": {},
+     "vague_parts": [],
+     "kind_cues": {},
+     "unconfirmed_cues": [
+      "llm: confirmed=false"
+     ],
+     "rationale": "No dates, no details, nothing confirmed."
+    },
+    "status": "unconfirmed",
+    "grounded": [],
+    "reasons": [
+     "wording is hedged or unconfirmed (llm: confirmed=false)",
+     "missing: a specific part, a plant, any date, a shipment or lot"
+    ]
+   }
+  ]
+ },
+ "category": [
+  "unconfirmed"
+ ],
+ "incidents": [],
+ "plan": [],
+ "dry_run": null,
+ "executed": [
+  {
+   "agent": "Coordinator",
+   "tool": "escalate",
+   "args": {
+    "reason": "Event E-02 not actionable: [rules] unconfirmed: wording is hedged or unconfirmed (rumor, nothing confirmed, may be, no details, no dates, something); missing: a specific part, a plant, any date, a shipment or lot; 'seat material' could mean any of ['SEAT-FAB', 'SEAT-LEA', 'SEAT-VAN'] | [llm:qwen2.5:1.5b] unconfirmed: wording is hedged or unconfirmed (llm: confirmed=false); missing: a specific part, a plant, any date, a shipment or lot"
+   },
+   "ok": true,
+   "result": {
+    "ok": true
+   },
+   "why": "human in the loop"
+  }
+ ],
+ "settings": {
+  "transfer_anchor": "original_date",
+  "llm_backend": "ollama",
+  "llm_model": "qwen2.5:1.5b",
+  "llm_url": null
+ },
+ "moves": [],
+ "unplaced": [],
+ "escalation": "Event E-02 not actionable: [rules] unconfirmed: wording is hedged or unconfirmed (rumor, nothing confirmed, may be, no details, no dates, something); missing: a specific part, a plant, any date, a shipment or lot; 'seat material' could mean any of ['SEAT-FAB', 'SEAT-LEA', 'SEAT-VAN'] | [llm:qwen2.5:1.5b] unconfirmed: wording is hedged or unconfirmed (llm: confirmed=false); missing: a specific part, a plant, any date, a shipment or lot",
+ "summary": "No operational change. Escalated to a human: [rules] unconfirmed: wording is hedged or unconfirmed (rumor, nothing confirmed, may be, no details, no dates, something); missing: a specific part, a plant, any date, a shipment or lot; 'seat material' could mean any of ['SEAT-FAB', 'SEAT-LEA', 'SEAT-VAN']; [llm:qwen2.5:1.5b] unconfirmed: wording is hedged or unconfirmed (llm: confirmed=false); missing: a specific part, a plant, any date, a shipment or lot",
+ "audit": [
+  {
+   "t": 1794095893.254,
+   "agent": "Coordinator",
+   "step": "receive",
+   "detail": "ops chat: Rumor from a supplier rep: something may be off with a seat material coming up. No dates, no details, nothing confirmed."
+  },
+  {
+   "t": 1794095894.174,
+   "agent": "Coordinator",
+   "step": "read",
+   "detail": "llm:qwen2.5:1.5b: ['unconfirmed']; rules: ['unconfirmed']"
+  },
+  {
+   "t": 1794095894.174,
+   "agent": "Coordinator",
+   "step": "ground",
+   "detail": "category=['unconfirmed']; 0 grounded incident(s); 2 escalation reason(s); relative dates in this message read the same under every convention"
+  },
+  {
+   "t": 1794095894.175,
+   "agent": "Coordinator",
+   "step": "escalate",
+   "detail": "Event E-02 not actionable: [rules] unconfirmed: wording is hedged or unconfirmed (rumor, nothing confirmed, may be, no details, no dates, something); missing: a specific part, a plant, any date, a shipment or lot; 'seat material' could mean any of ['SEAT-FAB', 'SEAT-LEA', 'SEAT-VAN'] | [llm:qwen2.5:",
+   "ok": true
+  },
+  {
+   "t": 1794095894.175,
+   "agent": "Coordinator",
+   "step": "done",
+   "detail": "No operational change. Escalated to a human: [rules] unconfirmed: wording is hedged or unconfirmed (rumor, nothing confirmed, may be, no details, no dates, something); missing: a specific part, a plan"
+  }
+ ],
+ "stats": {
+  "seconds": 0.92,
+  "live_calls": 1,
+  "failed_live_calls": 0,
+  "writes": 0
+ }
+}
