@@ -139,6 +139,10 @@
   "escalations": [],
   "noise_reasons": [],
   "conflicts": [],
+  "review": [],
+  "convention_reason": {
+   "basis": "same"
+  },
   "readings": [
    {
     "reading": {
@@ -5247,58 +5251,81 @@
   "llm_model": "qwen2.5:1.5b",
   "llm_url": null
  },
+ "human_review": [],
+ "dates_plain": {
+  "dates": [
+   {
+    "incident": "quality_hold",
+    "phrase": "Monday Feb 22",
+    "role": "first day",
+    "date": "Mon 2027-02-22",
+    "alternative": []
+   },
+   {
+    "incident": "quality_hold",
+    "phrase": "Wednesday Feb 24",
+    "role": "last day",
+    "date": "Wed 2027-02-24",
+    "alternative": []
+   }
+  ],
+  "why": ""
+ },
+ "loaners": [],
  "moves": [],
  "unplaced": [],
  "escalation": "",
  "summary": "Quality hold on LOT-0017 (HARN-B @ P_TX, built 2027-02-22..2027-02-24); 180 vehicles affected. Actions: 94 x crm.notify_customer, 36 x dealer.stop_sale, 1 x quality.hold_lot.",
  "audit": [
   {
-   "t": 1794095911.411,
+   "t": 1794101077.348,
    "agent": "Coordinator",
    "step": "receive",
    "detail": "ops chat: Quality alert: Atlas says the heavy-duty wiring harness sent to the Texas plant had a moisture contamination. Anything b"
   },
   {
-   "t": 1794095913.627,
+   "t": 1794101079.551,
    "agent": "Coordinator",
    "step": "read",
    "detail": "llm:qwen2.5:1.5b: ['quality_hold']; rules: ['quality_hold']"
   },
   {
-   "t": 1794095913.627,
+   "t": 1794101079.551,
    "agent": "Coordinator",
    "step": "ground",
    "detail": "category=['quality_hold']; 1 grounded incident(s); 0 escalation reason(s); relative dates in this message read the same under every convention"
   },
   {
-   "t": 1794095913.627,
+   "t": 1794101079.552,
    "agent": "CustomerCareQuality",
    "step": "plan",
    "detail": "hold 1 lot(s); contact 94 owners"
   },
   {
-   "t": 1794095913.627,
+   "t": 1794101079.552,
    "agent": "DealerNetwork",
    "step": "plan",
    "detail": "stop-sale at 36 dealers for 86 unsold vehicles"
   },
   {
-   "t": 1794095913.628,
+   "t": 1794101079.553,
    "agent": "Coordinator",
    "step": "prove",
    "detail": "dry run on twin: 131 calls, 13/13 invariants hold"
   },
   {
-   "t": 1794095913.678,
+   "t": 1794101079.607,
    "agent": "Coordinator",
    "step": "done",
    "detail": "Quality hold on LOT-0017 (HARN-B @ P_TX, built 2027-02-22..2027-02-24); 180 vehicles affected. Actions: 94 x crm.notify_customer, 36 x dealer.stop_sale, 1 x quality.hold_lot."
   }
  ],
  "stats": {
-  "seconds": 2.27,
+  "seconds": 2.26,
   "live_calls": 131,
   "failed_live_calls": 0,
+  "blocked_by_catalog": 0,
+  "reads": 0,
   "writes": 131
  }
 }

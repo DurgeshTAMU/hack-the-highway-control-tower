@@ -118,6 +118,10 @@
   "escalations": [],
   "noise_reasons": [],
   "conflicts": [],
+  "review": [],
+  "convention_reason": {
+   "basis": "same"
+  },
   "readings": [
    {
     "reading": {
@@ -3109,6 +3113,374 @@
   "llm_model": "qwen2.5:1.5b",
   "llm_url": null
  },
+ "human_review": [],
+ "dates_plain": {
+  "dates": [
+   {
+    "incident": "plant_outage",
+    "phrase": "2027-03-24",
+    "role": "first day",
+    "date": "Wed 2027-03-24",
+    "alternative": []
+   },
+   {
+    "incident": "plant_outage",
+    "phrase": "2027-03-25",
+    "role": "last day",
+    "date": "Thu 2027-03-25",
+    "alternative": []
+   }
+  ],
+  "why": ""
+ },
+ "loaners": [
+  {
+   "dealer": "D02",
+   "dealer_name": "Bayou Wacky Wheels",
+   "pool": 2,
+   "affected_orders": 1,
+   "standard_orders": 1,
+   "entitled": []
+  },
+  {
+   "dealer": "D03",
+   "dealer_name": "Alamo Wacky Wheels",
+   "pool": 2,
+   "affected_orders": 2,
+   "standard_orders": 2,
+   "entitled": []
+  },
+  {
+   "dealer": "D05",
+   "dealer_name": "Bluegrass Wacky Wheels",
+   "pool": 3,
+   "affected_orders": 1,
+   "standard_orders": 1,
+   "entitled": []
+  },
+  {
+   "dealer": "D07",
+   "dealer_name": "Music City Wacky Wheels",
+   "pool": 3,
+   "affected_orders": 2,
+   "standard_orders": 1,
+   "entitled": [
+    {
+     "rank": 1,
+     "customer_order": "CO-00876",
+     "customer": "C5020",
+     "tier": "Gold",
+     "promised": "2027-03-28",
+     "incident": "I1:plant_outage",
+     "loaner": true
+    }
+   ]
+  },
+  {
+   "dealer": "D08",
+   "dealer_name": "Magnolia Wacky Wheels",
+   "pool": 3,
+   "affected_orders": 6,
+   "standard_orders": 3,
+   "entitled": [
+    {
+     "rank": 1,
+     "customer_order": "CO-00930",
+     "customer": "C2866",
+     "tier": "Platinum",
+     "promised": "2027-03-28",
+     "incident": "I1:plant_outage",
+     "loaner": true
+    },
+    {
+     "rank": 2,
+     "customer_order": "CO-00911",
+     "customer": "C0327",
+     "tier": "Gold",
+     "promised": "2027-03-28",
+     "incident": "I1:plant_outage",
+     "loaner": true
+    },
+    {
+     "rank": 3,
+     "customer_order": "CO-00915",
+     "customer": "C4531",
+     "tier": "Gold",
+     "promised": "2027-03-28",
+     "incident": "I1:plant_outage",
+     "loaner": true
+    }
+   ]
+  },
+  {
+   "dealer": "D14",
+   "dealer_name": "Riverwalk Wacky Wheels",
+   "pool": 3,
+   "affected_orders": 1,
+   "standard_orders": 1,
+   "entitled": []
+  },
+  {
+   "dealer": "D15",
+   "dealer_name": "Hill Country Wacky Wheels",
+   "pool": 1,
+   "affected_orders": 3,
+   "standard_orders": 3,
+   "entitled": []
+  },
+  {
+   "dealer": "D16",
+   "dealer_name": "Pelican Wacky Wheels",
+   "pool": 3,
+   "affected_orders": 3,
+   "standard_orders": 1,
+   "entitled": [
+    {
+     "rank": 1,
+     "customer_order": "CO-00927",
+     "customer": "C0300",
+     "tier": "Platinum",
+     "promised": "2027-03-29",
+     "incident": "I1:plant_outage",
+     "loaner": true
+    },
+    {
+     "rank": 2,
+     "customer_order": "CO-00918",
+     "customer": "C4998",
+     "tier": "Gold",
+     "promised": "2027-03-29",
+     "incident": "I1:plant_outage",
+     "loaner": true
+    }
+   ]
+  },
+  {
+   "dealer": "D17",
+   "dealer_name": "Cumberland Wacky Wheels",
+   "pool": 1,
+   "affected_orders": 1,
+   "standard_orders": 0,
+   "entitled": [
+    {
+     "rank": 1,
+     "customer_order": "CO-00886",
+     "customer": "C2175",
+     "tier": "Gold",
+     "promised": "2027-03-27",
+     "incident": "I1:plant_outage",
+     "loaner": true
+    }
+   ]
+  },
+  {
+   "dealer": "D19",
+   "dealer_name": "Ozark Wacky Wheels",
+   "pool": 3,
+   "affected_orders": 1,
+   "standard_orders": 1,
+   "entitled": []
+  },
+  {
+   "dealer": "D20",
+   "dealer_name": "Sooner Wacky Wheels",
+   "pool": 1,
+   "affected_orders": 4,
+   "standard_orders": 3,
+   "entitled": [
+    {
+     "rank": 1,
+     "customer_order": "CO-00908",
+     "customer": "C0483",
+     "tier": "Gold",
+     "promised": "2027-03-30",
+     "incident": "I1:plant_outage",
+     "loaner": true
+    }
+   ]
+  },
+  {
+   "dealer": "D21",
+   "dealer_name": "Piney Woods Wacky Wheels",
+   "pool": 3,
+   "affected_orders": 6,
+   "standard_orders": 5,
+   "entitled": [
+    {
+     "rank": 1,
+     "customer_order": "CO-00899",
+     "customer": "C0283",
+     "tier": "Platinum",
+     "promised": "2027-03-28",
+     "incident": "I1:plant_outage",
+     "loaner": true
+    }
+   ]
+  },
+  {
+   "dealer": "D22",
+   "dealer_name": "Gateway Wacky Wheels",
+   "pool": 1,
+   "affected_orders": 1,
+   "standard_orders": 1,
+   "entitled": []
+  },
+  {
+   "dealer": "D23",
+   "dealer_name": "Lakeshore Wacky Wheels",
+   "pool": 2,
+   "affected_orders": 2,
+   "standard_orders": 2,
+   "entitled": []
+  },
+  {
+   "dealer": "D24",
+   "dealer_name": "Rocket City Wacky Wheels",
+   "pool": 3,
+   "affected_orders": 1,
+   "standard_orders": 1,
+   "entitled": []
+  },
+  {
+   "dealer": "D26",
+   "dealer_name": "Coastal Wacky Wheels",
+   "pool": 2,
+   "affected_orders": 6,
+   "standard_orders": 4,
+   "entitled": [
+    {
+     "rank": 1,
+     "customer_order": "CO-00887",
+     "customer": "C2673",
+     "tier": "Gold",
+     "promised": "2027-03-27",
+     "incident": "I1:plant_outage",
+     "loaner": true
+    },
+    {
+     "rank": 2,
+     "customer_order": "CO-00904",
+     "customer": "C1393",
+     "tier": "Gold",
+     "promised": "2027-03-28",
+     "incident": "I1:plant_outage",
+     "loaner": true
+    }
+   ]
+  },
+  {
+   "dealer": "D27",
+   "dealer_name": "Blue Ridge Wacky Wheels",
+   "pool": 1,
+   "affected_orders": 3,
+   "standard_orders": 3,
+   "entitled": []
+  },
+  {
+   "dealer": "D31",
+   "dealer_name": "Hoosier Wacky Wheels",
+   "pool": 2,
+   "affected_orders": 1,
+   "standard_orders": 0,
+   "entitled": [
+    {
+     "rank": 1,
+     "customer_order": "CO-00880",
+     "customer": "C1487",
+     "tier": "Gold",
+     "promised": "2027-03-28",
+     "incident": "I1:plant_outage",
+     "loaner": true
+    }
+   ]
+  },
+  {
+   "dealer": "D32",
+   "dealer_name": "River City Wacky Wheels",
+   "pool": 2,
+   "affected_orders": 1,
+   "standard_orders": 1,
+   "entitled": []
+  },
+  {
+   "dealer": "D35",
+   "dealer_name": "Queen City Wacky Wheels",
+   "pool": 1,
+   "affected_orders": 3,
+   "standard_orders": 2,
+   "entitled": [
+    {
+     "rank": 1,
+     "customer_order": "CO-00926",
+     "customer": "C1992",
+     "tier": "Platinum",
+     "promised": "2027-03-29",
+     "incident": "I1:plant_outage",
+     "loaner": true
+    }
+   ]
+  },
+  {
+   "dealer": "D38",
+   "dealer_name": "Steel City Wacky Wheels",
+   "pool": 1,
+   "affected_orders": 1,
+   "standard_orders": 1,
+   "entitled": []
+  },
+  {
+   "dealer": "D39",
+   "dealer_name": "Capital City Wacky Wheels",
+   "pool": 2,
+   "affected_orders": 1,
+   "standard_orders": 0,
+   "entitled": [
+    {
+     "rank": 1,
+     "customer_order": "CO-00906",
+     "customer": "C2678",
+     "tier": "Platinum",
+     "promised": "2027-03-29",
+     "incident": "I1:plant_outage",
+     "loaner": true
+    }
+   ]
+  },
+  {
+   "dealer": "D45",
+   "dealer_name": "Border Wacky Wheels",
+   "pool": 2,
+   "affected_orders": 2,
+   "standard_orders": 2,
+   "entitled": []
+  },
+  {
+   "dealer": "D46",
+   "dealer_name": "Windy Wacky Wheels",
+   "pool": 2,
+   "affected_orders": 1,
+   "standard_orders": 0,
+   "entitled": [
+    {
+     "rank": 1,
+     "customer_order": "CO-00884",
+     "customer": "C4844",
+     "tier": "Gold",
+     "promised": "2027-03-28",
+     "incident": "I1:plant_outage",
+     "loaner": true
+    }
+   ]
+  },
+  {
+   "dealer": "D49",
+   "dealer_name": "Crescent Wacky Wheels",
+   "pool": 2,
+   "affected_orders": 2,
+   "standard_orders": 2,
+   "entitled": []
+  }
+ ],
  "moves": [
   {
    "po": "PO-0157",
@@ -3218,59 +3590,61 @@
  "summary": "Plant outage at P_KY 2027-03-24..2027-03-25; 6 build(s) blocked. Moved 6 production order(s) (0 transferred). Actions: 15 x crm.assign_loaner, 25 x dealer.notify, 6 x mes.reschedule.",
  "audit": [
   {
-   "t": 1794095900.567,
+   "t": 1794101066.71,
    "agent": "Coordinator",
    "step": "receive",
    "detail": "plant alert: Plant operations alert: Wacky Wheels Lexington (P_KY) lost production to a power failure. Production is stopped from 202"
   },
   {
-   "t": 1794095902.578,
+   "t": 1794101068.656,
    "agent": "Coordinator",
    "step": "read",
    "detail": "llm:qwen2.5:1.5b: ['plant_outage']; rules: ['plant_outage']"
   },
   {
-   "t": 1794095902.578,
+   "t": 1794101068.656,
    "agent": "Coordinator",
    "step": "ground",
    "detail": "category=['plant_outage']; 1 grounded incident(s); 0 escalation reason(s); relative dates in this message read the same under every convention"
   },
   {
-   "t": 1794095902.578,
+   "t": 1794101068.656,
    "agent": "SupplyChainPlanner",
    "step": "plan",
    "detail": "6 moves (0 transfers), 0 unplaceable",
    "unplaced": []
   },
   {
-   "t": 1794095902.578,
+   "t": 1794101068.656,
    "agent": "DealerNetwork",
    "step": "plan",
    "detail": "25 dealer notices covering 56 customer orders"
   },
   {
-   "t": 1794095902.578,
+   "t": 1794101068.657,
    "agent": "CustomerCareQuality",
    "step": "plan",
    "detail": "15 entitled Platinum/Gold customers at 11 dealers; 15 loaners fit the pools"
   },
   {
-   "t": 1794095902.579,
+   "t": 1794101068.658,
    "agent": "Coordinator",
    "step": "prove",
    "detail": "dry run on twin: 60 calls, 13/13 invariants hold"
   },
   {
-   "t": 1794095902.609,
+   "t": 1794101068.688,
    "agent": "Coordinator",
    "step": "done",
    "detail": "Plant outage at P_KY 2027-03-24..2027-03-25; 6 build(s) blocked. Moved 6 production order(s) (0 transferred). Actions: 15 x crm.assign_loaner, 25 x dealer.notify, 6 x mes.reschedule."
   }
  ],
  "stats": {
-  "seconds": 2.04,
+  "seconds": 1.98,
   "live_calls": 60,
   "failed_live_calls": 0,
+  "blocked_by_catalog": 0,
+  "reads": 14,
   "writes": 46
  }
 }

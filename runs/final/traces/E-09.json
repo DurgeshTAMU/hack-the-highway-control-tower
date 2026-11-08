@@ -140,6 +140,10 @@
   "escalations": [],
   "noise_reasons": [],
   "conflicts": [],
+  "review": [],
+  "convention_reason": {
+   "basis": "same"
+  },
   "readings": [
    {
     "reading": {
@@ -3075,6 +3079,353 @@
   "llm_model": "qwen2.5:1.5b",
   "llm_url": null
  },
+ "human_review": [],
+ "dates_plain": {
+  "dates": [
+   {
+    "incident": "supplier_delay",
+    "phrase": "Monday Mar 29",
+    "role": "original ETA",
+    "date": "Mon 2027-03-29",
+    "alternative": []
+   },
+   {
+    "incident": "supplier_delay",
+    "phrase": "Thursday Apr 1",
+    "role": "new ETA",
+    "date": "Thu 2027-04-01",
+    "alternative": []
+   }
+  ],
+  "why": ""
+ },
+ "loaners": [
+  {
+   "dealer": "D02",
+   "dealer_name": "Bayou Wacky Wheels",
+   "pool": 2,
+   "affected_orders": 1,
+   "standard_orders": 1,
+   "entitled": []
+  },
+  {
+   "dealer": "D03",
+   "dealer_name": "Alamo Wacky Wheels",
+   "pool": 2,
+   "affected_orders": 1,
+   "standard_orders": 1,
+   "entitled": []
+  },
+  {
+   "dealer": "D04",
+   "dealer_name": "Gulf Coast Wacky Wheels",
+   "pool": 1,
+   "affected_orders": 2,
+   "standard_orders": 1,
+   "entitled": [
+    {
+     "rank": 1,
+     "customer_order": "CO-02628",
+     "customer": "C6557",
+     "tier": "Gold",
+     "promised": "2027-04-03",
+     "incident": "I1:supplier_delay",
+     "loaner": true
+    }
+   ]
+  },
+  {
+   "dealer": "D06",
+   "dealer_name": "Smoky Mountain Wacky Wheels",
+   "pool": 3,
+   "affected_orders": 2,
+   "standard_orders": 2,
+   "entitled": []
+  },
+  {
+   "dealer": "D08",
+   "dealer_name": "Magnolia Wacky Wheels",
+   "pool": 3,
+   "affected_orders": 6,
+   "standard_orders": 5,
+   "entitled": [
+    {
+     "rank": 1,
+     "customer_order": "CO-02590",
+     "customer": "C1928",
+     "tier": "Gold",
+     "promised": "2027-04-01",
+     "incident": "I1:supplier_delay",
+     "loaner": true
+    }
+   ]
+  },
+  {
+   "dealer": "D12",
+   "dealer_name": "Delta Wacky Wheels",
+   "pool": 3,
+   "affected_orders": 2,
+   "standard_orders": 2,
+   "entitled": []
+  },
+  {
+   "dealer": "D15",
+   "dealer_name": "Hill Country Wacky Wheels",
+   "pool": 1,
+   "affected_orders": 1,
+   "standard_orders": 1,
+   "entitled": []
+  },
+  {
+   "dealer": "D16",
+   "dealer_name": "Pelican Wacky Wheels",
+   "pool": 3,
+   "affected_orders": 2,
+   "standard_orders": 1,
+   "entitled": [
+    {
+     "rank": 1,
+     "customer_order": "CO-02640",
+     "customer": "C3035",
+     "tier": "Platinum",
+     "promised": "2027-04-04",
+     "incident": "I1:supplier_delay",
+     "loaner": true
+    }
+   ]
+  },
+  {
+   "dealer": "D20",
+   "dealer_name": "Sooner Wacky Wheels",
+   "pool": 1,
+   "affected_orders": 2,
+   "standard_orders": 2,
+   "entitled": []
+  },
+  {
+   "dealer": "D21",
+   "dealer_name": "Piney Woods Wacky Wheels",
+   "pool": 3,
+   "affected_orders": 1,
+   "standard_orders": 1,
+   "entitled": []
+  },
+  {
+   "dealer": "D23",
+   "dealer_name": "Lakeshore Wacky Wheels",
+   "pool": 2,
+   "affected_orders": 2,
+   "standard_orders": 2,
+   "entitled": []
+  },
+  {
+   "dealer": "D24",
+   "dealer_name": "Rocket City Wacky Wheels",
+   "pool": 3,
+   "affected_orders": 1,
+   "standard_orders": 1,
+   "entitled": []
+  },
+  {
+   "dealer": "D25",
+   "dealer_name": "Tupelo Wacky Wheels",
+   "pool": 1,
+   "affected_orders": 7,
+   "standard_orders": 4,
+   "entitled": [
+    {
+     "rank": 1,
+     "customer_order": "CO-02570",
+     "customer": "C5790",
+     "tier": "Platinum",
+     "promised": "2027-04-01",
+     "incident": "I1:supplier_delay",
+     "loaner": true
+    },
+    {
+     "rank": 2,
+     "customer_order": "CO-02568",
+     "customer": "C0740",
+     "tier": "Gold",
+     "promised": "2027-04-01",
+     "incident": "I1:supplier_delay",
+     "loaner": false
+    },
+    {
+     "rank": 3,
+     "customer_order": "CO-02644",
+     "customer": "C5679",
+     "tier": "Gold",
+     "promised": "2027-04-03",
+     "incident": "I1:supplier_delay",
+     "loaner": false
+    }
+   ]
+  },
+  {
+   "dealer": "D26",
+   "dealer_name": "Coastal Wacky Wheels",
+   "pool": 2,
+   "affected_orders": 2,
+   "standard_orders": 1,
+   "entitled": [
+    {
+     "rank": 1,
+     "customer_order": "CO-02593",
+     "customer": "C3575",
+     "tier": "Platinum",
+     "promised": "2027-04-02",
+     "incident": "I1:supplier_delay",
+     "loaner": true
+    }
+   ]
+  },
+  {
+   "dealer": "D27",
+   "dealer_name": "Blue Ridge Wacky Wheels",
+   "pool": 1,
+   "affected_orders": 1,
+   "standard_orders": 0,
+   "entitled": [
+    {
+     "rank": 1,
+     "customer_order": "CO-02615",
+     "customer": "C1676",
+     "tier": "Gold",
+     "promised": "2027-04-04",
+     "incident": "I1:supplier_delay",
+     "loaner": true
+    }
+   ]
+  },
+  {
+   "dealer": "D30",
+   "dealer_name": "Heartland Wacky Wheels",
+   "pool": 1,
+   "affected_orders": 1,
+   "standard_orders": 1,
+   "entitled": []
+  },
+  {
+   "dealer": "D31",
+   "dealer_name": "Hoosier Wacky Wheels",
+   "pool": 2,
+   "affected_orders": 1,
+   "standard_orders": 0,
+   "entitled": [
+    {
+     "rank": 1,
+     "customer_order": "CO-02587",
+     "customer": "C6144",
+     "tier": "Gold",
+     "promised": "2027-04-02",
+     "incident": "I1:supplier_delay",
+     "loaner": true
+    }
+   ]
+  },
+  {
+   "dealer": "D34",
+   "dealer_name": "Tar Heel Wacky Wheels",
+   "pool": 1,
+   "affected_orders": 2,
+   "standard_orders": 1,
+   "entitled": [
+    {
+     "rank": 1,
+     "customer_order": "CO-02641",
+     "customer": "C5173",
+     "tier": "Gold",
+     "promised": "2027-04-04",
+     "incident": "I1:supplier_delay",
+     "loaner": true
+    }
+   ]
+  },
+  {
+   "dealer": "D35",
+   "dealer_name": "Queen City Wacky Wheels",
+   "pool": 1,
+   "affected_orders": 2,
+   "standard_orders": 2,
+   "entitled": []
+  },
+  {
+   "dealer": "D36",
+   "dealer_name": "Lowcountry Wacky Wheels",
+   "pool": 2,
+   "affected_orders": 1,
+   "standard_orders": 1,
+   "entitled": []
+  },
+  {
+   "dealer": "D38",
+   "dealer_name": "Steel City Wacky Wheels",
+   "pool": 1,
+   "affected_orders": 1,
+   "standard_orders": 1,
+   "entitled": []
+  },
+  {
+   "dealer": "D44",
+   "dealer_name": "Hill City Wacky Wheels",
+   "pool": 2,
+   "affected_orders": 4,
+   "standard_orders": 2,
+   "entitled": [
+    {
+     "rank": 1,
+     "customer_order": "CO-02645",
+     "customer": "C5310",
+     "tier": "Platinum",
+     "promised": "2027-04-05",
+     "incident": "I1:supplier_delay",
+     "loaner": true
+    },
+    {
+     "rank": 2,
+     "customer_order": "CO-02598",
+     "customer": "C4530",
+     "tier": "Gold",
+     "promised": "2027-04-04",
+     "incident": "I1:supplier_delay",
+     "loaner": true
+    }
+   ]
+  },
+  {
+   "dealer": "D45",
+   "dealer_name": "Border Wacky Wheels",
+   "pool": 2,
+   "affected_orders": 1,
+   "standard_orders": 1,
+   "entitled": []
+  },
+  {
+   "dealer": "D46",
+   "dealer_name": "Windy Wacky Wheels",
+   "pool": 2,
+   "affected_orders": 3,
+   "standard_orders": 3,
+   "entitled": []
+  },
+  {
+   "dealer": "D47",
+   "dealer_name": "Cardinal Wacky Wheels",
+   "pool": 3,
+   "affected_orders": 3,
+   "standard_orders": 3,
+   "entitled": []
+  },
+  {
+   "dealer": "D50",
+   "dealer_name": "Ridge Wacky Wheels",
+   "pool": 3,
+   "affected_orders": 2,
+   "standard_orders": 2,
+   "entitled": []
+  }
+ ],
  "moves": [
   {
    "po": "PO-0436",
@@ -3184,59 +3535,61 @@
  "summary": "Supplier delay: shipment SH-0256 (CAM-360 for P_AL) moves 2027-03-29 -> 2027-04-01; 6 build(s) needing the part are blocked. Moved 6 production order(s) (2 transferred). Actions: 10 x crm.assign_loaner, 26 x dealer.notify, 4 x mes.reschedule, 2 x mes.transfer.",
  "audit": [
   {
-   "t": 1794095902.609,
+   "t": 1794101068.688,
    "agent": "Coordinator",
    "step": "receive",
    "detail": "supplier email: Quick heads up from Orbit: the surround-view cameras run for Huntsville can't make it Monday Mar 29. Carrier says Thursd"
   },
   {
-   "t": 1794095904.585,
+   "t": 1794101070.657,
    "agent": "Coordinator",
    "step": "read",
    "detail": "llm:qwen2.5:1.5b: ['plant_outage']; rules: ['supplier_delay']"
   },
   {
-   "t": 1794095904.585,
+   "t": 1794101070.657,
    "agent": "Coordinator",
    "step": "ground",
    "detail": "category=['supplier_delay']; 1 grounded incident(s); 0 escalation reason(s); relative dates in this message read the same under every convention"
   },
   {
-   "t": 1794095904.585,
+   "t": 1794101070.657,
    "agent": "SupplyChainPlanner",
    "step": "plan",
    "detail": "6 moves (2 transfers), 0 unplaceable",
    "unplaced": []
   },
   {
-   "t": 1794095904.586,
+   "t": 1794101070.657,
    "agent": "DealerNetwork",
    "step": "plan",
    "detail": "26 dealer notices covering 54 customer orders"
   },
   {
-   "t": 1794095904.586,
+   "t": 1794101070.657,
    "agent": "CustomerCareQuality",
    "step": "plan",
    "detail": "12 entitled Platinum/Gold customers at 9 dealers; 10 loaners fit the pools"
   },
   {
-   "t": 1794095904.587,
+   "t": 1794101070.658,
    "agent": "Coordinator",
    "step": "prove",
    "detail": "dry run on twin: 55 calls, 13/13 invariants hold"
   },
   {
-   "t": 1794095904.615,
+   "t": 1794101070.687,
    "agent": "Coordinator",
    "step": "done",
    "detail": "Supplier delay: shipment SH-0256 (CAM-360 for P_AL) moves 2027-03-29 -> 2027-04-01; 6 build(s) needing the part are blocked. Moved 6 production order(s) (2 transferred). Actions: 10 x crm.assign_loane"
   }
  ],
  "stats": {
-  "seconds": 2.01,
+  "seconds": 2.0,
   "live_calls": 55,
   "failed_live_calls": 0,
+  "blocked_by_catalog": 0,
+  "reads": 13,
   "writes": 42
  }
 }

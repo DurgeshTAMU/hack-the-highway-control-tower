@@ -144,6 +144,10 @@
   "escalations": [],
   "noise_reasons": [],
   "conflicts": [],
+  "review": [],
+  "convention_reason": {
+   "basis": "same"
+  },
   "readings": [
    {
     "reading": {
@@ -4002,58 +4006,81 @@
   "llm_model": "qwen2.5:1.5b",
   "llm_url": null
  },
+ "human_review": [],
+ "dates_plain": {
+  "dates": [
+   {
+    "incident": "quality_hold",
+    "phrase": "2027-03-02",
+    "role": "first day",
+    "date": "Tue 2027-03-02",
+    "alternative": []
+   },
+   {
+    "incident": "quality_hold",
+    "phrase": "2027-03-03",
+    "role": "last day",
+    "date": "Wed 2027-03-03",
+    "alternative": []
+   }
+  ],
+  "why": ""
+ },
+ "loaners": [],
  "moves": [],
  "unplaced": [],
  "escalation": "",
  "summary": "Quality hold on LOT-0191 (CHIP-IVI @ P_IN, built 2027-03-02..2027-03-03); 116 vehicles affected. Actions: 76 x crm.notify_customer, 25 x dealer.stop_sale, 1 x quality.hold_lot.",
  "audit": [
   {
-   "t": 1794095913.678,
+   "t": 1794101079.608,
    "agent": "Coordinator",
    "step": "receive",
    "detail": "quality bulletin: QUALITY BULLETIN QB-368: Lot LOT-0191 (CHIP-IVI, supplier SUP-12) installed at P_IN on vehicles built 2027-03-02 to 2027"
   },
   {
-   "t": 1794095916.174,
+   "t": 1794101082.035,
    "agent": "Coordinator",
    "step": "read",
    "detail": "llm:qwen2.5:1.5b: ['quality_hold']; rules: ['quality_hold']"
   },
   {
-   "t": 1794095916.174,
+   "t": 1794101082.035,
    "agent": "Coordinator",
    "step": "ground",
    "detail": "category=['quality_hold']; 1 grounded incident(s); 0 escalation reason(s); relative dates in this message read the same under every convention"
   },
   {
-   "t": 1794095916.174,
+   "t": 1794101082.035,
    "agent": "CustomerCareQuality",
    "step": "plan",
    "detail": "hold 1 lot(s); contact 76 owners"
   },
   {
-   "t": 1794095916.174,
+   "t": 1794101082.035,
    "agent": "DealerNetwork",
    "step": "plan",
    "detail": "stop-sale at 25 dealers for 40 unsold vehicles"
   },
   {
-   "t": 1794095916.176,
+   "t": 1794101082.037,
    "agent": "Coordinator",
    "step": "prove",
    "detail": "dry run on twin: 102 calls, 13/13 invariants hold"
   },
   {
-   "t": 1794095916.216,
+   "t": 1794101082.076,
    "agent": "Coordinator",
    "step": "done",
    "detail": "Quality hold on LOT-0191 (CHIP-IVI @ P_IN, built 2027-03-02..2027-03-03); 116 vehicles affected. Actions: 76 x crm.notify_customer, 25 x dealer.stop_sale, 1 x quality.hold_lot."
   }
  ],
  "stats": {
-  "seconds": 2.54,
+  "seconds": 2.47,
   "live_calls": 102,
   "failed_live_calls": 0,
+  "blocked_by_catalog": 0,
+  "reads": 0,
   "writes": 102
  }
 }

@@ -74,6 +74,64 @@
   ],
   "noise_reasons": [],
   "conflicts": [],
+  "review": [
+   {
+    "source": "rules",
+    "status": "unconfirmed",
+    "kind": null,
+    "hedges": [
+     "rumor",
+     "nothing confirmed",
+     "may be",
+     "no details",
+     "no dates",
+     "something"
+    ],
+    "missing": [
+     "a specific part",
+     "a plant",
+     "any date",
+     "a shipment or lot"
+    ],
+    "vague": [
+     {
+      "surface": "seat material",
+      "could_be": [
+       "SEAT-FAB",
+       "SEAT-LEA",
+       "SEAT-VAN"
+      ]
+     }
+    ],
+    "reasons": [
+     "wording is hedged or unconfirmed (rumor, nothing confirmed, may be, no details, no dates, something)",
+     "missing: a specific part, a plant, any date, a shipment or lot",
+     "'seat material' could mean any of ['SEAT-FAB', 'SEAT-LEA', 'SEAT-VAN']"
+    ],
+    "text": "Rumor from a supplier rep: something may be off with a seat material coming up. No dates, no details, nothing confirmed."
+   },
+   {
+    "source": "llm:qwen2.5:1.5b",
+    "status": "unconfirmed",
+    "kind": null,
+    "hedges": [],
+    "missing": [
+     "a specific part",
+     "a plant",
+     "any date",
+     "a shipment or lot"
+    ],
+    "vague": [],
+    "reasons": [
+     "wording is hedged or unconfirmed (llm: confirmed=false)",
+     "missing: a specific part, a plant, any date, a shipment or lot"
+    ],
+    "text": "Rumor from a supplier rep: something may be off with a seat material coming up."
+   }
+  ],
+  "convention_reason": {
+   "basis": "same"
+  },
   "readings": [
    {
     "reading": {
@@ -155,7 +213,7 @@
    "agent": "Coordinator",
    "tool": "escalate",
    "args": {
-    "reason": "Event E-02 not actionable: [rules] unconfirmed: wording is hedged or unconfirmed (rumor, nothing confirmed, may be, no details, no dates, something); missing: a specific part, a plant, any date, a shipment or lot; 'seat material' could mean any of ['SEAT-FAB', 'SEAT-LEA', 'SEAT-VAN'] | [llm:qwen2.5:1.5b] unconfirmed: wording is hedged or unconfirmed (llm: confirmed=false); missing: a specific part, a plant, any date, a shipment or lot"
+    "reason": "E-02 needs human review. The report is not confirmed. Hedged wording: \u201crumor\u201d, \u201cnothing confirmed\u201d, \u201cmay be\u201d, \u201cno details\u201d, \u201cno dates\u201d. It does not name a specific part, a plant, any date or a shipment or lot. \u201cseat material\u201d could mean any of: cloth seat set, leather seat set, minivan seat set. To act we need what happened, to which part or plant, and on which dates. The report is not confirmed. It does not name a specific part, a plant, any date or a shipment or lot. To act we need what happened, to which part or plant, and on which dates."
    },
    "ok": true,
    "result": {
@@ -170,47 +228,76 @@
   "llm_model": "qwen2.5:1.5b",
   "llm_url": null
  },
+ "human_review": [
+  {
+   "headline": "The report is not confirmed",
+   "why": [
+    "Hedged wording: \u201crumor\u201d, \u201cnothing confirmed\u201d, \u201cmay be\u201d, \u201cno details\u201d, \u201cno dates\u201d.",
+    "It does not name a specific part, a plant, any date or a shipment or lot.",
+    "\u201cseat material\u201d could mean any of: cloth seat set, leather seat set, minivan seat set."
+   ],
+   "need": "what happened, to which part or plant, and on which dates",
+   "source": "rules",
+   "text": "Rumor from a supplier rep: something may be off with a seat material coming up. No dates, no details, nothing confirmed."
+  },
+  {
+   "headline": "The report is not confirmed",
+   "why": [
+    "It does not name a specific part, a plant, any date or a shipment or lot."
+   ],
+   "need": "what happened, to which part or plant, and on which dates",
+   "source": "llm:qwen2.5:1.5b",
+   "text": "Rumor from a supplier rep: something may be off with a seat material coming up."
+  }
+ ],
+ "dates_plain": {
+  "dates": [],
+  "why": ""
+ },
+ "loaners": [],
  "moves": [],
  "unplaced": [],
- "escalation": "Event E-02 not actionable: [rules] unconfirmed: wording is hedged or unconfirmed (rumor, nothing confirmed, may be, no details, no dates, something); missing: a specific part, a plant, any date, a shipment or lot; 'seat material' could mean any of ['SEAT-FAB', 'SEAT-LEA', 'SEAT-VAN'] | [llm:qwen2.5:1.5b] unconfirmed: wording is hedged or unconfirmed (llm: confirmed=false); missing: a specific part, a plant, any date, a shipment or lot",
- "summary": "No operational change. Escalated to a human: [rules] unconfirmed: wording is hedged or unconfirmed (rumor, nothing confirmed, may be, no details, no dates, something); missing: a specific part, a plant, any date, a shipment or lot; 'seat material' could mean any of ['SEAT-FAB', 'SEAT-LEA', 'SEAT-VAN']; [llm:qwen2.5:1.5b] unconfirmed: wording is hedged or unconfirmed (llm: confirmed=false); missing: a specific part, a plant, any date, a shipment or lot",
+ "escalation": "E-02 needs human review. The report is not confirmed. Hedged wording: \u201crumor\u201d, \u201cnothing confirmed\u201d, \u201cmay be\u201d, \u201cno details\u201d, \u201cno dates\u201d. It does not name a specific part, a plant, any date or a shipment or lot. \u201cseat material\u201d could mean any of: cloth seat set, leather seat set, minivan seat set. To act we need what happened, to which part or plant, and on which dates. The report is not confirmed. It does not name a specific part, a plant, any date or a shipment or lot. To act we need what happened, to which part or plant, and on which dates.",
+ "summary": "No operational change; escalated to a human. The report is not confirmed. Hedged wording: \u201crumor\u201d, \u201cnothing confirmed\u201d, \u201cmay be\u201d, \u201cno details\u201d, \u201cno dates\u201d. It does not name a specific part, a plant, any date or a shipment or lot. \u201cseat material\u201d could mean any of: cloth seat set, leather seat set, minivan seat set. The report is not confirmed. It does not name a specific part, a plant, any date or a shipment or lot.",
  "audit": [
   {
-   "t": 1794095893.254,
+   "t": 1794101059.524,
    "agent": "Coordinator",
    "step": "receive",
    "detail": "ops chat: Rumor from a supplier rep: something may be off with a seat material coming up. No dates, no details, nothing confirmed."
   },
   {
-   "t": 1794095894.174,
+   "t": 1794101060.431,
    "agent": "Coordinator",
    "step": "read",
    "detail": "llm:qwen2.5:1.5b: ['unconfirmed']; rules: ['unconfirmed']"
   },
   {
-   "t": 1794095894.174,
+   "t": 1794101060.431,
    "agent": "Coordinator",
    "step": "ground",
    "detail": "category=['unconfirmed']; 0 grounded incident(s); 2 escalation reason(s); relative dates in this message read the same under every convention"
   },
   {
-   "t": 1794095894.175,
+   "t": 1794101060.433,
    "agent": "Coordinator",
    "step": "escalate",
-   "detail": "Event E-02 not actionable: [rules] unconfirmed: wording is hedged or unconfirmed (rumor, nothing confirmed, may be, no details, no dates, something); missing: a specific part, a plant, any date, a shipment or lot; 'seat material' could mean any of ['SEAT-FAB', 'SEAT-LEA', 'SEAT-VAN'] | [llm:qwen2.5:",
+   "detail": "E-02 needs human review. The report is not confirmed. Hedged wording: \u201crumor\u201d, \u201cnothing confirmed\u201d, \u201cmay be\u201d, \u201cno details\u201d, \u201cno dates\u201d. It does not name a specific part, a plant, any date or a shipment or lot. \u201cseat material\u201d could mean any of: cloth seat set, leather seat set, minivan seat set. To ",
    "ok": true
   },
   {
-   "t": 1794095894.175,
+   "t": 1794101060.433,
    "agent": "Coordinator",
    "step": "done",
-   "detail": "No operational change. Escalated to a human: [rules] unconfirmed: wording is hedged or unconfirmed (rumor, nothing confirmed, may be, no details, no dates, something); missing: a specific part, a plan"
+   "detail": "No operational change; escalated to a human. The report is not confirmed. Hedged wording: \u201crumor\u201d, \u201cnothing confirmed\u201d, \u201cmay be\u201d, \u201cno details\u201d, \u201cno dates\u201d. It does not name a specific part, a plant, a"
   }
  ],
  "stats": {
-  "seconds": 0.92,
+  "seconds": 0.91,
   "live_calls": 1,
   "failed_live_calls": 0,
+  "blocked_by_catalog": 0,
+  "reads": 0,
   "writes": 0
  }
 }
