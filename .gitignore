@@ -6,8 +6,9 @@ venv/
 .env
 *.token
 
-# run outputs: regenerate with `python -m control_tower.run ...`; keep only the latest submission run
+# run outputs: regenerate with `python -m control_tower.run ...`; keep the submission runs (run2 = earlier, final = current)
 runs/*
 !runs/run2/
+!runs/final/
 # the full graph export is 7.5 MB and regenerated on every run
 runs/**/knowledge_graph.graphml

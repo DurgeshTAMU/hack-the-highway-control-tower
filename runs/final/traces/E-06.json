@@ -1,0 +1,157 @@
+{
+ "event": {
+  "event_id": "E-06",
+  "received_at": "2027-03-08T08:42:00",
+  "source": "news wire",
+  "text": "Dealer Little Rock, AR asks where to find the new brochure PDF."
+ },
+ "readers": {
+  "rules": [
+   {
+    "source": "rules",
+    "segment": 0,
+    "text": "Dealer Little Rock, AR asks where to find the new brochure PDF.",
+    "kind": "noise",
+    "plants": [],
+    "parts": [],
+    "suppliers": [],
+    "shipments": [],
+    "lots": [],
+    "dates": {},
+    "vague_parts": [],
+    "kind_cues": {},
+    "unconfirmed_cues": [],
+    "rationale": "no plant, part, supplier, shipment or lot is mentioned"
+   }
+  ],
+  "llm:qwen2.5:1.5b": [
+   {
+    "source": "llm:qwen2.5:1.5b",
+    "segment": 0,
+    "text": "Dealer Little Rock, AR asks where to find the new brochure PDF.",
+    "kind": "noise",
+    "plants": [],
+    "parts": [],
+    "suppliers": [],
+    "shipments": [],
+    "lots": [],
+    "dates": {},
+    "vague_parts": [],
+    "kind_cues": {},
+    "unconfirmed_cues": [],
+    "rationale": "Not related to plants, parts, suppliers, shipments, or quality."
+   }
+  ]
+ },
+ "verdict": {
+  "category": [
+   "noise"
+  ],
+  "convention": "next_week",
+  "convention_note": "relative dates in this message read the same under every convention",
+  "incidents": [],
+  "escalations": [],
+  "noise_reasons": [
+   "[rules] no plant, part, supplier, shipment or lot is mentioned",
+   "[llm:qwen2.5:1.5b] Not related to plants, parts, suppliers, shipments, or quality."
+  ],
+  "conflicts": [],
+  "readings": [
+   {
+    "reading": {
+     "source": "rules",
+     "segment": 0,
+     "text": "Dealer Little Rock, AR asks where to find the new brochure PDF.",
+     "kind": "noise",
+     "plants": [],
+     "parts": [],
+     "suppliers": [],
+     "shipments": [],
+     "lots": [],
+     "dates": {},
+     "vague_parts": [],
+     "kind_cues": {},
+     "unconfirmed_cues": [],
+     "rationale": "no plant, part, supplier, shipment or lot is mentioned"
+    },
+    "status": "noise",
+    "grounded": [],
+    "reasons": [
+     "no plant, part, supplier, shipment or lot is mentioned"
+    ]
+   },
+   {
+    "reading": {
+     "source": "llm:qwen2.5:1.5b",
+     "segment": 0,
+     "text": "Dealer Little Rock, AR asks where to find the new brochure PDF.",
+     "kind": "noise",
+     "plants": [],
+     "parts": [],
+     "suppliers": [],
+     "shipments": [],
+     "lots": [],
+     "dates": {},
+     "vague_parts": [],
+     "kind_cues": {},
+     "unconfirmed_cues": [],
+     "rationale": "Not related to plants, parts, suppliers, shipments, or quality."
+    },
+    "status": "noise",
+    "grounded": [],
+    "reasons": [
+     "Not related to plants, parts, suppliers, shipments, or quality."
+    ]
+   }
+  ]
+ },
+ "category": [
+  "noise"
+ ],
+ "incidents": [],
+ "plan": [],
+ "dry_run": null,
+ "executed": [],
+ "settings": {
+  "transfer_anchor": "original_date",
+  "llm_backend": "ollama",
+  "llm_model": "qwen2.5:1.5b",
+  "llm_url": null
+ },
+ "moves": [],
+ "unplaced": [],
+ "escalation": "",
+ "summary": "No action. Judged not operational: [rules] no plant, part, supplier, shipment or lot is mentioned.",
+ "audit": [
+  {
+   "t": 1794095898.626,
+   "agent": "Coordinator",
+   "step": "receive",
+   "detail": "news wire: Dealer Little Rock, AR asks where to find the new brochure PDF."
+  },
+  {
+   "t": 1794095899.585,
+   "agent": "Coordinator",
+   "step": "read",
+   "detail": "llm:qwen2.5:1.5b: ['noise']; rules: ['noise']"
+  },
+  {
+   "t": 1794095899.585,
+   "agent": "Coordinator",
+   "step": "ground",
+   "detail": "category=['noise']; 0 grounded incident(s); 0 escalation reason(s); relative dates in this message read the same under every convention"
+  },
+  {
+   "t": 1794095899.585,
+   "agent": "Coordinator",
+   "step": "done",
+   "detail": "No action. Judged not operational: [rules] no plant, part, supplier, shipment or lot is mentioned."
+  }
+ ],
+ "stats": {
+  "seconds": 0.96,
+  "live_calls": 0,
+  "failed_live_calls": 0,
+  "writes": 0
+ }
+}
