@@ -276,6 +276,11 @@ class Grounder:
                 # 3) a reader that failed is overruled when another reader grounded the same kind
                 if r.kind in grounded_kinds and any(g.source != r.source for g in incidents.values()):
                     continue
+                # 3b) an LLM reading that fails on a sentence another reader already grounded is a
+                #     misclassification of that sentence, not a separate incident (small models do this)
+                if llm and any(g.source != r.source and _overlap(g.segment_text, r.text) > 0.5
+                               for g in incidents.values()):
+                    continue
                 escalations.append(f"[{r.source}] {r.kind} could not be grounded: " + "; ".join(res.reasons))
         return list(incidents.values()), list(dict.fromkeys(escalations)), noise, results, conflicts
 

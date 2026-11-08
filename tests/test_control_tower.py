@@ -20,7 +20,7 @@ def kg():
 
 @pytest.fixture(scope="module")
 def coord(kg):
-    return Coordinator(kg, Settings(transfer_anchor="disruption_start"))
+    return Coordinator(kg, Settings(transfer_anchor="original_date"))
 
 
 def run(coord, text, eid="T-1"):
@@ -210,3 +210,12 @@ def test_reader_disagreement_escalates(kg):
     tr, _ = run(c, "Huntsville line is waiting on 60 kWh battery packs from Lumen. Original drop was Monday Mar 29, "
                    "new ETA is Thursday Apr 1.")
     assert not writes(tr) and tr["escalation"]
+
+
+def test_llm_misclassifying_a_grounded_sentence_does_not_add_an_escalation(kg):
+    text = ("Quick heads up from Orbit: the surround-view cameras run for Huntsville can't make it Monday Mar 29. "
+            "Carrier says Thursday Apr 1 now (a customs inspection).")
+    payload = {"incidents": [{"kind": "plant_outage", "evidence": text, "plant": None, "part": None,
+                              "supplier": None, "dates": {}, "confirmed": True, "reason": "wrong kind"}]}
+    tr, _ = run(Coordinator(kg, Settings(), FakeBackend(payload)), text)
+    assert tr["incidents"] and tr["dry_run"]["ok"] and not tr["escalation"]

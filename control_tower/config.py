@@ -13,8 +13,8 @@ class Settings:
     # Where a transferred order lands when its own plant has no free slot. The handbook says
     # "another plant that builds the model, on any day with a free slot"; we take the earliest such
     # (day, plant) on or after this anchor:
-    #   disruption_start (default) | today | original_date | restart
-    transfer_anchor: str = os.environ.get("CT_TRANSFER_ANCHOR", "disruption_start")
+    #   original_date (default) | disruption_start | today | restart
+    transfer_anchor: str = os.environ.get("CT_TRANSFER_ANCHOR", "original_date")
     llm_backend: str = os.environ.get("CT_LLM", "none")            # none | ollama | openai
     llm_model: str = os.environ.get("CT_LLM_MODEL", "qwen2.5:7b-instruct")
     llm_url: str | None = os.environ.get("CT_LLM_URL")
