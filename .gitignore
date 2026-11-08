@@ -6,8 +6,11 @@ venv/
 .env
 *.token
 
-# run outputs: regenerate with `python -m control_tower.run ...`; keep only the latest submission run
+# run outputs: regenerate with `python -m control_tower.run ...`; keep the submission runs
+# (final = LLM submission, run4 = rule reader on the current code, run2 = earlier)
 runs/*
+!runs/final/
+!runs/run4/
 !runs/run2/
 # the full graph export is 7.5 MB and regenerated on every run
 runs/**/knowledge_graph.graphml

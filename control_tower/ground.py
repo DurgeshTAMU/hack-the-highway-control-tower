@@ -28,6 +28,33 @@ def _overlap(a: str, b: str) -> float:
     return len(ta & tb) / max(1, min(len(ta), len(tb)))
 
 
+def _entities(r: Reading) -> set:
+    return set(r.plants) | set(r.parts) | set(r.suppliers) | set(r.shipments) | set(r.lots)
+
+
+def _bound(g) -> set:
+    out = set()
+    for v in g.bindings.values():
+        if isinstance(v, str):
+            out.add(v)
+        elif isinstance(v, list):
+            out |= {x for x in v if isinstance(x, str)}
+    return out
+
+
+def _missing(r: Reading) -> list:
+    return [w for w, ok in (("a specific part", r.parts), ("a plant", r.plants), ("any date", r.dates),
+                            ("a shipment or lot", r.shipments or r.lots)) if not ok]
+
+
+def _suspected(r: Reading):
+    if r.kind in OPERATIONAL_KINDS:
+        return r.kind
+    if r.cues:
+        return max(r.cues, key=lambda k: len(r.cues[k]))
+    return None
+
+
 @dataclass
 class Grounded:
     kind: str
@@ -64,6 +91,8 @@ class Verdict:
     convention_note: str
     results: list                     # list[ReadingResult] under the chosen convention
     conflicts: list
+    review: list = field(default_factory=list)          # structured escalation items, for a human
+    convention_reason: dict = field(default_factory=dict)
 
     @property
     def category(self) -> list[str]:
@@ -77,6 +106,7 @@ class Verdict:
         return {"category": self.category, "convention": self.convention, "convention_note": self.convention_note,
                 "incidents": [g.to_json() for g in self.incidents], "escalations": self.escalations,
                 "noise_reasons": self.noise_reasons, "conflicts": self.conflicts,
+                "review": self.review, "convention_reason": self.convention_reason,
                 "readings": [r.to_json() for r in self.results]}
 
 
@@ -253,6 +283,16 @@ class Grounder:
                 for g in gs:
                     incidents.pop(g.key, None)
         escalations, noise = list(conflicts), []
+        review = [{"source": "readers", "status": "conflict", "kind": None, "hedges": [], "missing": [], "vague": [],
+                   "reasons": [c], "text": ""} for c in conflicts]
+
+        def flag(res, status, line, reasons=None):
+            r = res.reading
+            escalations.append(line)
+            review.append({"source": r.source, "status": status, "kind": _suspected(r),
+                           "hedges": [h for h in r.unconfirmed if not h.startswith("llm")],
+                           "missing": _missing(r), "vague": r.vague_parts,
+                           "reasons": reasons if reasons is not None else res.reasons, "text": r.text})
         # 1) a lexical rumor cue (rules reader) vetoes any incident grounded from the same text: rule 8
         for res in results:
             r = res.reading
@@ -260,7 +300,8 @@ class Grounder:
                 for k, g in list(incidents.items()):
                     if _overlap(g.segment_text, r.text) > 0.5:
                         incidents.pop(k)
-                        escalations.append(f"[{r.source}] vetoed {g.key}: the text is hedged/unconfirmed")
+                        flag(res, "veto", f"[{r.source}] vetoed {g.key}: the text is hedged/unconfirmed",
+                             [f"a matching record was found ({g.key[1]}), but the wording is hedged or unconfirmed"])
         grounded_kinds = {g.kind for g in incidents.values()}
         for res in results:
             r = res.reading
@@ -271,18 +312,26 @@ class Grounder:
                 # 2) an LLM 'not confirmed' vote only stands if nothing in the message grounds
                 if llm and incidents:
                     continue
-                escalations.append(f"[{r.source}] unconfirmed: " + "; ".join(res.reasons))
+                flag(res, "unconfirmed", f"[{r.source}] unconfirmed: " + "; ".join(res.reasons))
             elif res.status in ("failed", "ambiguous"):
                 # 3) a reader that failed is overruled when another reader grounded the same kind
                 if r.kind in grounded_kinds and any(g.source != r.source for g in incidents.values()):
                     continue
                 # 3b) an LLM reading that fails on a sentence another reader already grounded is a
-                #     misclassification of that sentence, not a separate incident (small models do this)
+                #     misclassification of that sentence (small models do this), but only if it names
+                #     nothing the grounded incident does not already cover; a different plant, part or
+                #     supplier may be a second incident and still goes to a human
                 if llm and any(g.source != r.source and _overlap(g.segment_text, r.text) > 0.5
-                               for g in incidents.values()):
+                               and _entities(r) <= _bound(g) for g in incidents.values()):
                     continue
-                escalations.append(f"[{r.source}] {r.kind} could not be grounded: " + "; ".join(res.reasons))
-        return list(incidents.values()), list(dict.fromkeys(escalations)), noise, results, conflicts
+                flag(res, res.status, f"[{r.source}] {r.kind} could not be grounded: " + "; ".join(res.reasons))
+        seen, uniq = set(), []
+        for it in review:
+            k = (it["source"], it["status"], it["text"], tuple(it["reasons"]))
+            if k not in seen:
+                seen.add(k)
+                uniq.append(it)
+        return list(incidents.values()), list(dict.fromkeys(escalations)), noise, results, conflicts, uniq
 
     def decide(self, readings: list[Reading]) -> Verdict:
         tried = {}
@@ -295,12 +344,15 @@ class Grounder:
         keys = lambda res: sorted(g.key for g in res[0])
         if keys(tried[chosen]) == keys(tried[other]) and failures(tried[other]) == failures(tried[chosen]):
             note = "relative dates in this message read the same under every convention"
+            why = {"basis": "same"}
         elif failures(tried[other]) > failures(tried[chosen]):
             bad = [r.reasons for r in tried[other][3] if r.status in ("failed", "ambiguous")]
             note = (f"'{chosen}' chosen: under '{other}' part of the message fails to ground {bad[:1]} "
                     f"(evidence for the '{chosen}' reading)")
+            why = {"basis": "evidence", "other": other, "other_fails": bad[0][0] if bad and bad[0] else ""}
         else:
             note = (f"'{chosen}' chosen by default (house convention: 'next <weekday>' = that day next week, "
                     f"corroborated where the data can tell); '{other}' would give {keys(tried[other])}")
-        inc, esc, noise, results, conflicts = tried[chosen]
-        return Verdict(inc, esc, noise, chosen, note, results, conflicts)
+            why = {"basis": "default", "other": other, "other_keys": [list(k) for k in keys(tried[other])]}
+        inc, esc, noise, results, conflicts, review = tried[chosen]
+        return Verdict(inc, esc, noise, chosen, note, results, conflicts, review, why)

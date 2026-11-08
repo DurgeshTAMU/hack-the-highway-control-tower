@@ -56,6 +56,9 @@ next week; the same convention then fixes the outage window to Mar 19–22 (6 af
   exact; ≥ 3 kinds of action.
 - Live failure on a move → re-read the schedule, take the next free slot once; otherwise escalate. Transport errors retry
   with backoff; tool errors are never blindly retried.
+- Tool discovery (MCP-style): the catalog is read from `GET /tools`, and every call is checked against it (tool name,
+  argument names and types) before it is sent; a malformed call is blocked locally and escalated, never sent.
+- Escalations reach the human in plain language: what is hedged or missing, which words are vague, and what we would need to act.
 
 ## Evaluation (this package, 15 events)
 
@@ -64,14 +67,16 @@ next week; the same convention then fixes the outage window to Mar 19–22 (6 af
 | Categories | 1 compound (outage + delay), 3 delays, 3 outages, 3 quality holds, 3 noise, 2 unconfirmed |
 | Live run | 879 calls, **0 failed**, 2 escalations (rumors only), 0 writes on noise/rumors |
 | Replay of `action_log.jsonl` on a fresh world | 15/15 events pass all invariants |
-| Tests | 27 passing, incl. unseen paraphrases, the organisers' explainer phrasings, open-start outages, unnumbered compounds, guardrail refusals, failed-call recovery, LLM contract, reader conflict |
+| Independent audit (`tools/audit_run.py`) | All handbook rules hold on all 15 events, incl. earliest-day packing, per-incident ≥ 3 action kinds and every call matching the server's tool schema. It imports none of our code, and it caught all 4 deliberately corrupted logs it was tested on |
+| Tests | 31 passing, incl. unseen paraphrases, the organisers' explainer phrasings, open-start outages, unnumbered compounds, guardrail refusals, failed-call recovery, LLM contract, reader conflict, tool-catalog blocking, and the independent audit on the full feed |
 | Runtime | ~15 s end-to-end on a laptop CPU (KG build ~4 s) |
 
 **Model cited:** `qwen2.5:1.5b` (Qwen2.5 1.5B Instruct, ~1 GB, Q4) served locally by Ollama on a MacBook (Apple silicon, CPU/GPU
 shared memory, no cloud). The final run (`runs/final`) made 15 LLM calls, 6,423 tokens, 26 s of model time, 27 s end to end,
 0 failed tool calls. The rule reader runs alongside as a second opinion. The 1.5B model sometimes misclassifies a sentence
 (e.g. calls a supplier delay a quality hold); the grounder overrules a failed LLM reading when another reader already grounded
-that sentence, so such slips cause no extra action or escalation. Categories, bindings and all 879 logged calls are the same
+that sentence and the LLM named nothing that incident does not cover, so such slips cause no extra action or escalation
+(an LLM reading that names a different plant, part or supplier may be a second incident and still goes to a human). Categories, bindings and all 879 logged calls are the same
 with and without the LLM.
 
 ## Assumptions we made (the handbook is silent)

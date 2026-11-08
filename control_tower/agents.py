@@ -11,6 +11,7 @@ Specialists are deterministic: the handbook is policy-as-code. The LLM is used o
 """
 from __future__ import annotations
 
+import re
 import time
 from collections import defaultdict
 from dataclasses import dataclass, field
@@ -23,6 +24,34 @@ from .llm import Backend, LLMError, LLMReader
 from .nlp import Resolver, RuleReader
 
 TIER_RANK = {"Platinum": 0, "Gold": 1, "Standard": 2}
+_DATE_RX = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+
+
+class ToolCatalog:
+    """The tools the server advertises (GET /tools). Every call is checked against it before it is sent,
+    so a malformed call is caught locally instead of failing (and being counted) on the server."""
+
+    def __init__(self, tools: list[dict], source: str):
+        self.spec = {t["tool"]: t["args"] for t in tools}
+        self.source = source
+
+    def check(self, tool: str, args: dict) -> str | None:
+        if tool not in self.spec:
+            return f"'{tool}' is not in the server's tool catalog"
+        want = self.spec[tool]
+        if set(args) != set(want):
+            return f"arguments {sorted(args)} do not match the catalog {sorted(want)}"
+        for k, kind in want.items():
+            v = args[k]
+            if kind.startswith("list"):
+                ok = isinstance(v, list) and v and all(isinstance(x, str) and x for x in v)
+            elif kind == "YYYY-MM-DD":
+                ok = isinstance(v, str) and bool(_DATE_RX.match(v))
+            else:
+                ok = isinstance(v, str) and bool(v.strip())
+            if not ok:
+                return f"argument '{k}' is not a valid {kind}"
+        return None
 
 
 @dataclass
@@ -198,6 +227,26 @@ class CustomerCareQuality:
             out[d] = {"queue": ordered, "pool": self.kg.attr(nid("Dealer", d))["loaners"]}
         return out
 
+    def allocation(self, cos: list[str], labels: dict) -> list[dict]:
+        """Per dealer: pool, every entitled customer in policy order, and who got a loaner (for the UI)."""
+        per = defaultdict(list)
+        for co in cos:
+            per[self.kg.attr(nid("CustomerOrder", co))["dealer"]].append(co)
+        q = self.loaner_queue(cos)
+        out = []
+        for d in sorted(per):
+            da = self.kg.attr(nid("Dealer", d))
+            pool = da["loaners"]
+            queue = q.get(d, {"queue": []})["queue"]
+            std = sum(self.kg.attr(nid("Customer", self.kg.attr(nid("CustomerOrder", c))["customer"]))["tier"] == "Standard"
+                      for c in per[d])
+            out.append({"dealer": d, "dealer_name": da["name"], "pool": pool, "affected_orders": len(per[d]),
+                        "standard_orders": std,
+                        "entitled": [{"rank": i + 1, "customer_order": co, "customer": cust, "tier": tier,
+                                      "promised": promised, "incident": labels.get(co), "loaner": i < pool}
+                                     for i, (_, promised, co, cust, tier) in enumerate(queue)]})
+        return out
+
     def plan_loaners(self, cos: list[str], labels: dict, audit: Audit):
         actions = []
         q = self.loaner_queue(cos)
@@ -246,6 +295,8 @@ class Coordinator:
         self.scp = SupplyChainPlanner(kg, self.s)
         self.dealers = DealerNetwork(kg)
         self.care = CustomerCareQuality(kg)
+        self._catalogs: dict = {}
+        self.last_extras: dict = {"loaners": []}
 
     # ---------------------------------------------------------------- understanding
     def understand(self, event: dict, audit: Audit) -> tuple[Verdict, list, dict]:
@@ -274,6 +325,7 @@ class Coordinator:
         incs = sorted(verdict.incidents, key=lambda g: g.key)
         impacts = [analyse(self.kg, g, f"I{i + 1}:{g.kind}") for i, g in enumerate(incs)]
         actions, moves, unplaced = [], [], []
+        self.last_extras = {"loaners": []}
         sched = [i for i in impacts if i.grounded.kind != "quality_hold"]
         if sched:
             moves, unplaced, a, _ = self.scp.plan(sched, audit)
@@ -291,6 +343,7 @@ class Coordinator:
             cos = sorted(set(cos))
             actions += self.dealers.plan_notify(cos, new_date, labels, audit)
             actions += self.care.plan_loaners(cos, labels, audit)
+            self.last_extras["loaners"] = self.care.allocation(cos, labels)
         for imp in impacts:
             if imp.grounded.kind == "quality_hold":
                 acts = self.care.plan_quality(imp, audit)
@@ -301,11 +354,30 @@ class Coordinator:
         return impacts, actions, moves, unplaced
 
     # ---------------------------------------------------------------- execution
+    def catalog(self, client) -> ToolCatalog | None:
+        """Tool discovery, once per client: the live server's GET /tools, or the twin's copy of the same list."""
+        key = getattr(client, "base", type(client).__name__)
+        if key not in self._catalogs:
+            try:
+                src = f"GET {client.base}/tools" if hasattr(client, "base") else "enterprise.TOOLS (digital twin)"
+                self._catalogs[key] = ToolCatalog(client.tools(), src)
+            except Exception:  # an unreachable /tools must not stop operations; calls are then sent unchecked
+                self._catalogs[key] = None
+        return self._catalogs[key]
+
     def execute(self, client, event_id: str, actions: list[Action], audit: Audit):
         log, failures = [], []
         live_pool = {}
         assigned = defaultdict(int)
+        cat = self.catalog(client)
         for act in actions:
+            bad = cat.check(act.tool, act.args) if cat else None
+            if bad:
+                rec = {**act.to_json(), "ok": False, "blocked": bad, "result": "not sent: failed the tool-catalog check"}
+                failures.append(rec)
+                log.append(rec)
+                audit.log(act.agent, "blocked", f"{act.tool} not sent: {bad}")
+                continue
             if act.tool == "crm.assign_loaner":
                 d = self.kg.attr(nid("CustomerOrder", act.args["customer_order_id"]))["dealer"]
                 if d in live_pool and assigned[d] >= live_pool[d]:

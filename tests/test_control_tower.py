@@ -212,6 +212,43 @@ def test_reader_disagreement_escalates(kg):
     assert not writes(tr) and tr["escalation"]
 
 
+def test_llm_naming_a_different_plant_on_a_grounded_sentence_still_escalates(kg):
+    # same sentence, but the LLM saw a second plant that it could not ground: that may be a second incident
+    text = ("Quick heads up from Orbit: the surround-view cameras run for Huntsville can't make it Monday Mar 29. "
+            "Carrier says Thursday Apr 1 now (a customs inspection).")
+    payload = {"incidents": [{"kind": "plant_outage", "evidence": text, "plant": "Jackson", "part": None,
+                              "supplier": None, "dates": {}, "confirmed": True, "reason": "second incident?"}]}
+    tr, _ = run(Coordinator(kg, Settings(), FakeBackend(payload)), text)
+    assert tr["incidents"] and tr["escalation"]
+
+
+def test_tool_catalog_blocks_a_malformed_call_before_it_is_sent(coord):
+    from control_tower.agents import Action, Audit
+    client = TwinClient(namespace="cat")
+    eid = client.fresh("cat")
+    bad = Action("DealerNetwork", "dealer.notify", {"dealer_id": "D01", "customer_order_ids": "CO-00001"}, "bad args")
+    log, failures = coord.execute(client, eid, [bad], Audit())
+    assert failures and log[0]["blocked"] and not client.calls
+
+
+def test_escalations_are_plain_language(feed):
+    for eid in ("E-02", "E-13"):
+        esc = [r for r in feed[eid]["executed"] if r["tool"] == "escalate"][0]["args"]["reason"]
+        assert "[rules]" not in esc and "To act we need" in esc
+        assert feed[eid]["human_review"]
+
+
+def test_independent_audit_passes_on_the_feed(feed, tmp_path):
+    import subprocess
+    import sys
+    rows = [json.dumps({"event_id": eid, "tool": r["tool"], "args": r["args"], "ok": r["ok"]})
+            for eid, tr in feed.items() for r in tr["executed"] if not r.get("blocked") and not r.get("skipped")]
+    (tmp_path / "action_log.jsonl").write_text("\n".join(rows) + "\n", encoding="utf-8")
+    audit = DATA_DIR.parent / "tools" / "audit_run.py"
+    out = subprocess.run([sys.executable, "-I", str(audit), str(tmp_path)], capture_output=True, text=True)
+    assert out.returncode == 0, out.stdout[-2000:]
+
+
 def test_llm_misclassifying_a_grounded_sentence_does_not_add_an_escalation(kg):
     text = ("Quick heads up from Orbit: the surround-view cameras run for Huntsville can't make it Monday Mar 29. "
             "Carrier says Thursday Apr 1 now (a customs inspection).")

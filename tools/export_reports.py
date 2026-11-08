@@ -17,10 +17,21 @@ def event_md(t: dict) -> str:
          f"*{ev['received_at']} · {ev['source']}*", "", "> " + ev["text"].replace("\n", "\n> "), "",
          "## Summary", t["summary"], ""]
     v = t.get("verdict", {})
-    if v.get("convention_note"):
+    dp = t.get("dates_plain") or {}
+    if dp.get("dates"):
+        L += ["## Date reading"] + [f"- “{d['phrase']}” → {d['role']} **{d['date']}**"
+                                    + (f" (other reading: {', '.join(d['alternative'])})" if d["alternative"] else "")
+                                    for d in dp["dates"]] + ([dp["why"]] if dp.get("why") else []) + [""]
+    elif v.get("convention_note"):
         L += ["## Date reading", v["convention_note"], ""]
-    for r in v.get("noise_reasons", []) + v.get("escalations", []):
-        L += [f"- {r}"]
+    if t.get("human_review"):
+        L += ["## Why a human must review"]
+        for i in t["human_review"]:
+            L += [f"- **{i['headline']}.** " + " ".join(i["why"]) + f" To act we need {i['need']}."]
+        L += [""]
+    else:
+        for r in v.get("noise_reasons", []) + v.get("escalations", []):
+            L += [f"- {r}"]
     for inc in t.get("incidents", []):
         L += [f"## Incident {inc['id']}", "", "**Grounding checks**"] + [f"- {c}" for c in inc["grounding_checks"]]
         L += ["", "**Graph path**", "", " → ".join(inc["path_schema"]), "", "`" + " → ".join(inc["example_path"]) + "`", "",
@@ -74,11 +85,18 @@ def ontology_svg(onto_path: Path) -> str:
 
 
 def main():
-    run = Path(sys.argv[1])
-    out = Path(sys.argv[2]) if len(sys.argv) > 2 else run / "reports"
+    args = sys.argv[1:]
+    if not args or args[0] in ("-h", "--help") or len(args) > 2:
+        print(__doc__.strip())
+        sys.exit(0 if args and args[0] in ("-h", "--help") else 2)
+    run = Path(args[0])
+    if not (run / "traces").is_dir():
+        print(f"error: {run} is not a run folder (expected {run / 'traces'}/ with E-xx.json traces)")
+        sys.exit(2)
+    out = Path(args[1]) if len(args) > 1 else run / "reports"
     out.mkdir(parents=True, exist_ok=True)
     for f in sorted((run / "traces").glob("E-*.json")):
-        (out / f"{f.stem}.md").write_text(event_md(json.loads(f.read_text())), encoding="utf-8")
+        (out / f"{f.stem}.md").write_text(event_md(json.loads(f.read_text(encoding="utf-8"))), encoding="utf-8")
     onto = run / "ontology" / "ontology.json"
     if onto.exists():
         (out / "ontology.svg").write_text(ontology_svg(onto), encoding="utf-8")

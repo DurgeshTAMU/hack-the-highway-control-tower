@@ -73,3 +73,7 @@ class TwinClient:
 
     def state(self, event_id):
         return self.ent.state(event_id)
+
+    def tools(self):
+        from enterprise import TOOLS      # the same list the server publishes at GET /tools
+        return [{"tool": k, "desc": v["desc"], "args": v["args"]} for k, v in TOOLS.items()]

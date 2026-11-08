@@ -48,9 +48,12 @@ def main(argv=None):
         events = client.events()
     if args.only:
         events = [e for e in events if e["event_id"] in args.only]
+    cat = coord.catalog(client)
     print(f"KG: {stats['nodes']} nodes, {stats['edges']} edges ({time.time() - t0:.1f}s). "
           f"LLM: {backend.kind + ':' + backend.model if backend else 'none (rule reader only)'}. "
-          f"Executing on: {'local twin' if args.twin else args.server}", flush=True)
+          f"Executing on: {'local twin' if args.twin else args.server}. "
+          f"Tools: {len(cat.spec) if cat else 0} discovered via {cat.source if cat else 'nothing (calls unchecked)'}",
+          flush=True)
     rows = []
     for ev in events:
         tr = handle_event(coord, ev, client)
@@ -66,6 +69,7 @@ def main(argv=None):
             for c in client.calls:
                 f.write(json.dumps({k: c[k] for k in ("event_id", "tool", "args", "ok")}) + "\n")
     run = {"events": rows, "kg": stats, "settings": settings.to_json(),
+           "tool_catalog": {"source": cat.source, "tools": sorted(cat.spec)} if cat else None,
            "llm": None if not backend else {"backend": backend.kind, "model": backend.model, "calls": backend.calls,
                                             "seconds": round(backend.seconds, 1), "tokens": backend.tokens},
            "machine": {"python": sys.version.split()[0], "platform": platform.platform()},
